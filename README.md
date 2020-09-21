@@ -11,3 +11,9 @@ $ pip install .
 ```bash
 $ python main.py
 ```
+
+# Run a single module
+
+```bash
+$ python -m compiler.lexico
+```
