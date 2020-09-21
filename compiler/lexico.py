@@ -4,6 +4,7 @@ from os import path
 from enum import Enum, auto
 import json
 from compiler.utils import get_src_code, strip_comments
+from compiler.exceptions import ParseError
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -16,6 +17,7 @@ class TokenType(str, Enum):
     ComparationOperator = "ComparationOperator"
     ArithmeticOperator = "ArithmeticOperator"
     Identifier = "Identifier"
+    Number = "Number"
     Unknown = "Unknown"
 
 
@@ -27,7 +29,7 @@ AttributionOperator = [':=']
 ComparationOperator = ['<', '>', '<=', '>=', '<>']
 ArithmeticOperator = ['+', '-', '*', '/']
 Operators = ArithmeticOperator + ArithmeticOperator + AttributionOperator
-Digits = list(range(0, 10))
+Digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
 
 def get_token_type(token):
@@ -37,10 +39,14 @@ def get_token_type(token):
         return TokenType.Delimiter
     elif token in AttributionOperator:
         return TokenType.AttributionOperator
+    elif token in ArithmeticOperator:
+        return TokenType.ArithmeticOperator
     elif token in ComparationOperator:
         return TokenType.ComparationOperator
     elif re.match(r'^[a-zA-Z][a-zA-Z0-0_]+$', token):
         return TokenType.Identifier
+    elif re.match(r'^([0-9]+$|^[0-9]+\.[0-9]+$)', token):
+        return TokenType.Number
     else:
         return TokenType.Unknown
 
@@ -67,8 +73,23 @@ class TokenReader():
         self.stack = []
 
     def process_number(self):
-        # TODO
-        pass
+        num = self.current_char
+        #
+        while len(self.stack) > 0:
+            char = self.stack.pop()
+            if char in Digits:
+                num += char
+            elif char == '.':
+                num += char
+            elif char in Delimiter or char in Blank:
+                self.current_token = num
+                self.save_token(self.current_token)
+                self.stack.append(char)
+                break
+            else:
+                num += char
+                raise ParseError(
+                    'Invalid token %s in line %s' % (num, self.current_line))
 
     def process_delimiter(self):
         if self.current_char == ':' and len(self.stack) > 0:
@@ -100,6 +121,9 @@ class TokenReader():
             else:
                 self.current_token += self.current_char
                 self.stack.append(char2)
+        else:
+            self.current_token = self.current_char
+            self.save_token(self.current_token)
 
     def process_endline(self):
         self.current_line += 1
@@ -120,6 +144,8 @@ class TokenReader():
                 self.process_operator()
             elif self.current_char in Delimiter:
                 self.process_delimiter()
+            elif self.current_char in Digits:
+                self.process_number()
             elif self.current_char == '\n':
                 self.process_endline()
 
@@ -134,5 +160,5 @@ def build_symbol_table(path):
 if __name__ == '__main__':
     # Testes rapidos...
     logging.basicConfig(level=logging.DEBUG)
-    res = TokenReader().process(" Area := 3.14 * Raio * Raio;")
+    res = build_symbol_table('Test1.pas')
     logger.debug(json.dumps(res, indent=2))
