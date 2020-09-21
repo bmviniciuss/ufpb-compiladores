@@ -52,6 +52,28 @@ def test_basic_attribution():
     assert actual == expected
 
 
+def test_parse_id_with_numbers():
+    src_code = 'program Test1;'
+    actual = TokenReader().process(src_code)
+    expected = [
+        {
+            "token": "program",
+            "type": TokenType.Keyword,
+            "line": 1
+        },
+        {
+            "token": "Test1",
+            "type": TokenType.Identifier,
+            "line": 1
+        }, {
+            "token": ";",
+            "type": TokenType.Delimiter,
+            "line": 1
+        }]
+
+    assert actual == expected
+
+
 def test_test1_code():
     actual = build_symbol_table('Test1.pas')
 

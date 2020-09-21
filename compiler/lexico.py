@@ -43,7 +43,7 @@ def get_token_type(token):
         return TokenType.ArithmeticOperator
     elif token in ComparationOperator:
         return TokenType.ComparationOperator
-    elif re.match(r'^[a-zA-Z][a-zA-Z0-0_]+$', token):
+    elif re.match(r'^[a-zA-Z]([a-zA-Z0-9_])+$', token):
         return TokenType.Identifier
     elif re.match(r'^([0-9]+$|^[0-9]+\.[0-9]+$)', token):
         return TokenType.Number
@@ -74,8 +74,13 @@ class TokenReader():
         self.stack = []
 
     def process_number(self):
+        # TODO: Maybe this breaks something...tests passing so far
+        if self.current_token != "":  # Id with num
+            self.current_token += self.current_char
+            return
+
         num = self.current_char
-        #
+
         while len(self.stack) > 0:
             char = self.stack.pop()
             if char in Digits:
@@ -99,11 +104,12 @@ class TokenReader():
             if pair in AttributionOperator:
                 self.current_token = pair
                 self.save_token(self.current_token)
-            else:
+            else:  # Put char back in the stack if we didnt care for it
                 self.current_token += self.current_char
                 self.stack.append(char2)
         else:
-            self.save_token(self.current_token)
+            if self.current_token:
+                self.save_token(self.current_token)
             self.save_token(self.current_char)
 
     def process_blank(self):
@@ -119,7 +125,7 @@ class TokenReader():
             if pair in ComparationOperator:
                 self.current_token = pair
                 self.save_token(self.current_token)
-            else:
+            else:  # Put char back in the stack if we didnt care for it
                 self.current_token += self.current_char
                 self.stack.append(char2)
         else:
@@ -127,6 +133,8 @@ class TokenReader():
             self.save_token(self.current_token)
 
     def process_endline(self):
+        if self.current_token != "":
+            self.save_token(self.current_token)
         self.current_line += 1
 
     def process_token(self):
@@ -165,5 +173,5 @@ if __name__ == '__main__':
     # Testes rapidos...
     logging.basicConfig(level=logging.DEBUG)
     res = build_symbol_table('Test1.pas')
-    # res = TokenReader().process('Area := 3.14 * Raio * Raio;')
+    # res = TokenReader().process('      Raio := 4;')
     logger.debug(json.dumps(res, indent=2))
