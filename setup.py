@@ -9,5 +9,5 @@ setup(name='Pascal Compiler',
       author_email='',
       url='https://github.com/bmviniciuss/ufpb-compiladores',
       packages=['compiler'],
-      install_requires=['autopep8', 'pylint']
+      install_requires=['autopep8', 'pylint', 'pytest']
       )

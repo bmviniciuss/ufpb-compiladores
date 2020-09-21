@@ -62,7 +62,8 @@ class TokenReader():
     def save_token(self, token):
         self.token_list.append({
             "token": token,
-            "type": get_token_type(token)
+            "type": get_token_type(token),
+            "line": self.current_line
         })
         self.current_token = ""
 
@@ -148,6 +149,9 @@ class TokenReader():
                 self.process_number()
             elif self.current_char == '\n':
                 self.process_endline()
+            else:
+                logger.error("Couldn't parse token %s in line %s",
+                             self.current_char, self.current_line)
 
         return self.token_list
 
@@ -161,4 +165,5 @@ if __name__ == '__main__':
     # Testes rapidos...
     logging.basicConfig(level=logging.DEBUG)
     res = build_symbol_table('Test1.pas')
+    # res = TokenReader().process('Area := 3.14 * Raio * Raio;')
     logger.debug(json.dumps(res, indent=2))
