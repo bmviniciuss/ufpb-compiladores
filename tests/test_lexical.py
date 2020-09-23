@@ -774,13 +774,615 @@ def test_test3_code():
 
 def test_test4_code():
     actual = build_symbol_table('Test4.pas')
-    expected = []
+    expected = [
+        {
+            "token": "program",
+            "type": "Keyword",
+            "line": 1
+        },
+        {
+            "token": "Test4",
+            "type": "Identifier",
+            "line": 1
+        },
+        {
+            "token": ";",
+            "type": "Delimiter",
+            "line": 1
+        },
+        {
+            "token": "var",
+            "type": "Keyword",
+            "line": 2
+        },
+        {
+            "token": "A",
+            "type": "Identifier",
+            "line": 3
+        },
+        {
+            "token": ",",
+            "type": "Delimiter",
+            "line": 3
+        },
+        {
+            "token": "B",
+            "type": "Identifier",
+            "line": 3
+        },
+        {
+            "token": ",",
+            "type": "Delimiter",
+            "line": 3
+        },
+        {
+            "token": "R",
+            "type": "Identifier",
+            "line": 3
+        },
+        {
+            "token": ",",
+            "type": "Delimiter",
+            "line": 3
+        },
+        {
+            "token": "I",
+            "type": "Identifier",
+            "line": 3
+        },
+        {
+            "token": ":",
+            "type": "Delimiter",
+            "line": 3
+        },
+        {
+            "token": "integer",
+            "type": "Keyword",
+            "line": 3
+        },
+        {
+            "token": ";",
+            "type": "Delimiter",
+            "line": 3
+        },
+        {
+            "token": "procedure",
+            "type": "Keyword",
+            "line": 5
+        },
+        {
+            "token": "teste",
+            "type": "Identifier",
+            "line": 5
+        },
+        {
+            "token": "(",
+            "type": "Delimiter",
+            "line": 5
+        },
+        {
+            "token": "A",
+            "type": "Identifier",
+            "line": 5
+        },
+        {
+            "token": ":",
+            "type": "Delimiter",
+            "line": 5
+        },
+        {
+            "token": "integer",
+            "type": "Keyword",
+            "line": 5
+        },
+        {
+            "token": ",",
+            "type": "Delimiter",
+            "line": 5
+        },
+        {
+            "token": "B",
+            "type": "Identifier",
+            "line": 5
+        },
+        {
+            "token": ":",
+            "type": "Delimiter",
+            "line": 5
+        },
+        {
+            "token": "real",
+            "type": "Keyword",
+            "line": 5
+        },
+        {
+            "token": ")",
+            "type": "Delimiter",
+            "line": 5
+        },
+        {
+            "token": ";",
+            "type": "Delimiter",
+            "line": 5
+        },
+        {
+            "token": "var",
+            "type": "Keyword",
+            "line": 6
+        },
+        {
+            "token": "S",
+            "type": "Identifier",
+            "line": 7
+        },
+        {
+            "token": ",",
+            "type": "Delimiter",
+            "line": 7
+        },
+        {
+            "token": "X",
+            "type": "Identifier",
+            "line": 7
+        },
+        {
+            "token": ":",
+            "type": "Delimiter",
+            "line": 7
+        },
+        {
+            "token": "real",
+            "type": "Keyword",
+            "line": 7
+        },
+        {
+            "token": ";",
+            "type": "Delimiter",
+            "line": 7
+        },
+        {
+            "token": "begin",
+            "type": "Keyword",
+            "line": 8
+        },
+        {
+            "token": "S",
+            "type": "Identifier",
+            "line": 9
+        },
+        {
+            "token": ":=",
+            "type": "AttributionOperator",
+            "line": 9
+        },
+        {
+            "token": "A",
+            "type": "Identifier",
+            "line": 9
+        },
+        {
+            "token": "+",
+            "type": "ArithmeticOperator",
+            "line": 9
+        },
+        {
+            "token": "B",
+            "type": "Identifier",
+            "line": 9
+        },
+        {
+            "token": "*",
+            "type": "ArithmeticOperator",
+            "line": 9
+        },
+        {
+            "token": "X",
+            "type": "Identifier",
+            "line": 9
+        },
+        {
+            "token": "end",
+            "type": "Keyword",
+            "line": 10
+        },
+        {
+            "token": "begin",
+            "type": "Keyword",
+            "line": 12
+        },
+        {
+            "token": "while",
+            "type": "Keyword",
+            "line": 13
+        },
+        {
+            "token": "(",
+            "type": "Delimiter",
+            "line": 13
+        },
+        {
+            "token": "I",
+            "type": "Identifier",
+            "line": 13
+        },
+        {
+            "token": "<=",
+            "type": "ComparisonOperator",
+            "line": 13
+        },
+        {
+            "token": "5",
+            "type": "Number",
+            "line": 13
+        },
+        {
+            "token": ")",
+            "type": "Delimiter",
+            "line": 13
+        },
+        {
+            "token": "do",
+            "type": "Keyword",
+            "line": 13
+        },
+        {
+            "token": "begin",
+            "type": "Keyword",
+            "line": 14
+        },
+        {
+            "token": "A",
+            "type": "Identifier",
+            "line": 15
+        },
+        {
+            "token": ":=",
+            "type": "AttributionOperator",
+            "line": 15
+        },
+        {
+            "token": "A",
+            "type": "Identifier",
+            "line": 15
+        },
+        {
+            "token": "+",
+            "type": "ArithmeticOperator",
+            "line": 15
+        },
+        {
+            "token": "1",
+            "type": "Number",
+            "line": 15
+        },
+        {
+            "token": ";",
+            "type": "Delimiter",
+            "line": 15
+        },
+        {
+            "token": "B",
+            "type": "Identifier",
+            "line": 16
+        },
+        {
+            "token": ":=",
+            "type": "AttributionOperator",
+            "line": 16
+        },
+        {
+            "token": "B",
+            "type": "Identifier",
+            "line": 16
+        },
+        {
+            "token": "-",
+            "type": "ArithmeticOperator",
+            "line": 16
+        },
+        {
+            "token": "1",
+            "type": "Number",
+            "line": 16
+        },
+        {
+            "token": ";",
+            "type": "Delimiter",
+            "line": 16
+        },
+        {
+            "token": "R",
+            "type": "Identifier",
+            "line": 17
+        },
+        {
+            "token": ":=",
+            "type": "AttributionOperator",
+            "line": 17
+        },
+        {
+            "token": "A",
+            "type": "Identifier",
+            "line": 17
+        },
+        {
+            "token": "+",
+            "type": "ArithmeticOperator",
+            "line": 17
+        },
+        {
+            "token": "B",
+            "type": "Identifier",
+            "line": 17
+        },
+        {
+            "token": ";",
+            "type": "Delimiter",
+            "line": 17
+        },
+        {
+            "token": "I",
+            "type": "Identifier",
+            "line": 18
+        },
+        {
+            "token": ":=",
+            "type": "AttributionOperator",
+            "line": 18
+        },
+        {
+            "token": "I",
+            "type": "Identifier",
+            "line": 18
+        },
+        {
+            "token": "+",
+            "type": "ArithmeticOperator",
+            "line": 18
+        },
+        {
+            "token": "1",
+            "type": "Number",
+            "line": 18
+        },
+        {
+            "token": "end",
+            "type": "Keyword",
+            "line": 19
+        },
+        {
+            "token": "end",
+            "type": "Keyword",
+            "line": 20
+        },
+        {
+            "token": ".",
+            "type": "Delimiter",
+            "line": 20
+        }
+    ]
 
     assert actual == expected
 
 
 def test_test5_code():
     actual = build_symbol_table('Test5.pas')
-    expected = []
+    expected = [
+        {
+            "token": "program",
+            "type": "Keyword",
+            "line": 1
+        },
+        {
+            "token": "Test5",
+            "type": "Identifier",
+            "line": 1
+        },
+        {
+            "token": ";",
+            "type": "Delimiter",
+            "line": 1
+        },
+        {
+            "token": "var",
+            "type": "Keyword",
+            "line": 2
+        },
+        {
+            "token": "A",
+            "type": "Identifier",
+            "line": 3
+        },
+        {
+            "token": ",",
+            "type": "Delimiter",
+            "line": 3
+        },
+        {
+            "token": "B",
+            "type": "Identifier",
+            "line": 3
+        },
+        {
+            "token": ",",
+            "type": "Delimiter",
+            "line": 3
+        },
+        {
+            "token": "R",
+            "type": "Identifier",
+            "line": 3
+        },
+        {
+            "token": ",",
+            "type": "Delimiter",
+            "line": 3
+        },
+        {
+            "token": "I",
+            "type": "Identifier",
+            "line": 3
+        },
+        {
+            "token": ":",
+            "type": "Delimiter",
+            "line": 3
+        },
+        {
+            "token": "integer",
+            "type": "Keyword",
+            "line": 3
+        },
+        {
+            "token": ";",
+            "type": "Delimiter",
+            "line": 3
+        },
+        {
+            "token": "begin",
+            "type": "Keyword",
+            "line": 4
+        },
+        {
+            "token": "for",
+            "type": "Keyword",
+            "line": 5
+        },
+        {
+            "token": "I",
+            "type": "Identifier",
+            "line": 5
+        },
+        {
+            "token": ":=",
+            "type": "AttributionOperator",
+            "line": 5
+        },
+        {
+            "token": "1",
+            "type": "Number",
+            "line": 5
+        },
+        {
+            "token": "to",
+            "type": "Keyword",
+            "line": 5
+        },
+        {
+            "token": "5",
+            "type": "Number",
+            "line": 5
+        },
+        {
+            "token": "do",
+            "type": "Keyword",
+            "line": 5
+        },
+        {
+            "token": "begin",
+            "type": "Keyword",
+            "line": 6
+        },
+        {
+            "token": "A",
+            "type": "Identifier",
+            "line": 7
+        },
+        {
+            "token": ":=",
+            "type": "AttributionOperator",
+            "line": 7
+        },
+        {
+            "token": "A",
+            "type": "Identifier",
+            "line": 7
+        },
+        {
+            "token": "*",
+            "type": "ArithmeticOperator",
+            "line": 7
+        },
+        {
+            "token": "A",
+            "type": "Identifier",
+            "line": 7
+        },
+        {
+            "token": ";",
+            "type": "Delimiter",
+            "line": 7
+        },
+        {
+            "token": "B",
+            "type": "Identifier",
+            "line": 8
+        },
+        {
+            "token": ":=",
+            "type": "AttributionOperator",
+            "line": 8
+        },
+        {
+            "token": "B",
+            "type": "Identifier",
+            "line": 8
+        },
+        {
+            "token": "*",
+            "type": "ArithmeticOperator",
+            "line": 8
+        },
+        {
+            "token": "A",
+            "type": "Identifier",
+            "line": 8
+        },
+        {
+            "token": ";",
+            "type": "Delimiter",
+            "line": 8
+        },
+        {
+            "token": "R",
+            "type": "Identifier",
+            "line": 9
+        },
+        {
+            "token": ":=",
+            "type": "AttributionOperator",
+            "line": 9
+        },
+        {
+            "token": "A",
+            "type": "Identifier",
+            "line": 9
+        },
+        {
+            "token": "+",
+            "type": "ArithmeticOperator",
+            "line": 9
+        },
+        {
+            "token": "B",
+            "type": "Identifier",
+            "line": 9
+        },
+        {
+            "token": "end",
+            "type": "Keyword",
+            "line": 10
+        },
+        {
+            "token": "end",
+            "type": "Keyword",
+            "line": 11
+        },
+        {
+            "token": ".",
+            "type": "Delimiter",
+            "line": 11
+        }
+    ]
 
     assert actual == expected

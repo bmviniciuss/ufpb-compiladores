@@ -1,10 +1,10 @@
+import json
 import logging
 import re
-from os import path
-from enum import Enum, auto
-import json
-from compiler.utils import get_src_code, strip_comments
 from compiler.exceptions import ParseError
+from compiler.utils import get_src_code, strip_comments
+from enum import Enum, auto
+from os import path
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -23,12 +23,12 @@ class TokenType(str, Enum):
 
 Whitespace = [' ', '\t', '\n']
 Keyword = ['program', 'var', 'integer', 'real', 'boolean', 'procedure',
-           'begin', 'end', 'if', 'then', 'else', 'while', 'do', 'not']
+           'begin', 'end', 'if', 'then', 'else', 'while', 'do', 'not', 'for', 'to']
 Delimiter = [';', '.', ':', '(', ')', ',']
 AttributionOperator = [':=']
 ComparisonOperator = ['=', '<', '>', '<=', '>=', '<>']
 ArithmeticOperator = ['+', '-', '*', '/']
-Operators = ArithmeticOperator + ComparisonOperator + AttributionOperator
+Operator = ArithmeticOperator + ComparisonOperator + AttributionOperator
 Digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 ValidIdentifierPattern = r'^[a-zA-Z]([a-zA-Z0-9_])*$'
 ValidNumberPattern = r'^([0-9]+$|^[0-9]+\.[0-9]+$)'
@@ -118,7 +118,7 @@ class TokenReader():
         self.save_token(self.current_token)
 
     def process_word(self):
-        self.take_until(Delimiter + Whitespace)
+        self.take_until(Delimiter + Whitespace + Operator)
 
         if not re.match(ValidIdentifierPattern, self.current_token):
             raise ParseError(
@@ -154,7 +154,7 @@ class TokenReader():
                 self.process_word()
             elif self.current_char in Whitespace:
                 self.process_Whitespace()
-            elif self.current_char in Operators:
+            elif self.current_char in Operator:
                 self.process_operator()
             elif self.current_char in Delimiter:
                 self.process_delimiter()
@@ -175,6 +175,6 @@ def build_symbol_table(path):
 if __name__ == '__main__':
     # Testes rapidos...
     logging.basicConfig(level=logging.DEBUG)
-    # res = build_symbol_table('Test1_sem_erro.pas')
-    res = TokenReader().process('Area := 3.14 * Raio * Raio;')
-    # logger.debug(json.dumps(res, indent=2))
+    res = build_symbol_table('Test4.pas')
+    # res = TokenReader().process('Area := 3.14 * Raio * Raio;')
+    logger.debug(json.dumps(res, indent=2))
