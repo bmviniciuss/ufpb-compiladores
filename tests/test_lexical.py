@@ -309,3 +309,478 @@ def test_test1_code():
     ]
 
     assert actual == expected
+
+
+def test_test2_code():
+    actual = build_symbol_table('Test2.pas')
+    expected = [
+        {
+            "token": "program",
+            "type": TokenType.Keyword,
+            "line": 1
+        },
+        {
+            "token": "Test2",
+            "type": TokenType.Identifier,
+            "line": 1
+        },
+        {
+            "token": ";",
+            "type": TokenType.Delimiter,
+            "line": 1
+        },
+        {
+            "token": "var",
+            "type": TokenType.Keyword,
+            "line": 2
+        },
+        {
+            "token": "X",
+            "type": TokenType.Identifier,
+            "line": 3
+        },
+        {
+            "token": ",",
+            "type": TokenType.Delimiter,
+            "line": 3
+        },
+        {
+            "token": "A",
+            "type": TokenType.Identifier,
+            "line": 3
+        },
+        {
+            "token": ",",
+            "type": TokenType.Delimiter,
+            "line": 3
+        },
+        {
+            "token": "B",
+            "type": TokenType.Identifier,
+            "line": 3
+        },
+        {
+            "token": ":",
+            "type": TokenType.Delimiter,
+            "line": 3
+        },
+        {
+            "token": "integer",
+            "type": TokenType.Keyword,
+            "line": 3
+        },
+        {
+            "token": ";",
+            "type": TokenType.Delimiter,
+            "line": 3
+        },
+        {
+            "token": "begin",
+            "type": TokenType.Keyword,
+            "line": 4
+        },
+        {
+            "token": "A",
+            "type": TokenType.Identifier,
+            "line": 5
+        },
+        {
+            "token": ":=",
+            "type": TokenType.AttributionOperator,
+            "line": 5
+        },
+        {
+            "token": "5",
+            "type": TokenType.Number,
+            "line": 5
+        },
+        {
+            "token": ";",
+            "type": TokenType.Delimiter,
+            "line": 5
+        },
+        {
+            "token": "B",
+            "type": TokenType.Identifier,
+            "line": 6
+        },
+        {
+            "token": ":=",
+            "type": TokenType.AttributionOperator,
+            "line": 6
+        },
+        {
+            "token": "10",
+            "type": TokenType.Number,
+            "line": 6
+        },
+        {
+            "token": ";",
+            "type": TokenType.Delimiter,
+            "line": 6
+        },
+        {
+            "token": "if",
+            "type": TokenType.Keyword,
+            "line": 7
+        },
+        {
+            "token": "(",
+            "type": TokenType.Delimiter,
+            "line": 7
+        },
+        {
+            "token": "A",
+            "type": TokenType.Identifier,
+            "line": 7
+        },
+        {
+            "token": ">",
+            "type": TokenType.ComparisonOperator,
+            "line": 7
+        },
+        {
+            "token": "B",
+            "type": TokenType.Identifier,
+            "line": 7
+        },
+        {
+            "token": ")",
+            "type": TokenType.Delimiter,
+            "line": 7
+        },
+        {
+            "token": "then",
+            "type": TokenType.Keyword,
+            "line": 7
+        },
+        {
+            "token": "begin",
+            "type": TokenType.Keyword,
+            "line": 8
+        },
+        {
+            "token": "X",
+            "type": TokenType.Identifier,
+            "line": 9
+        },
+        {
+            "token": ":=",
+            "type": TokenType.AttributionOperator,
+            "line": 9
+        },
+        {
+            "token": "A",
+            "type": TokenType.Identifier,
+            "line": 9
+        },
+        {
+            "token": ";",
+            "type": TokenType.Delimiter,
+            "line": 9
+        },
+        {
+            "token": "A",
+            "type": TokenType.Identifier,
+            "line": 10
+        },
+        {
+            "token": ":=",
+            "type": TokenType.AttributionOperator,
+            "line": 10
+        },
+        {
+            "token": "B",
+            "type": TokenType.Identifier,
+            "line": 10
+        },
+        {
+            "token": ";",
+            "type": TokenType.Delimiter,
+            "line": 10
+        },
+        {
+            "token": "B",
+            "type": TokenType.Identifier,
+            "line": 11
+        },
+        {
+            "token": ":=",
+            "type": TokenType.AttributionOperator,
+            "line": 11
+        },
+        {
+            "token": "X",
+            "type": TokenType.Identifier,
+            "line": 11
+        },
+        {
+            "token": "end",
+            "type": TokenType.Keyword,
+            "line": 12
+        },
+        {
+            "token": "end",
+            "type": TokenType.Keyword,
+            "line": 13
+        },
+        {
+            "token": ".",
+            "type": TokenType.Delimiter,
+            "line": 13
+        }
+    ]
+
+    assert actual == expected
+
+
+def test_test3_code():
+    actual = build_symbol_table('Test3.pas')
+    expected = [
+        {
+            "token": "program",
+            "type": TokenType.Keyword,
+            "line": 1
+        },
+        {
+            "token": "Test3",
+            "type": TokenType.Identifier,
+            "line": 1
+        },
+        {
+            "token": ";",
+            "type": TokenType.Delimiter,
+            "line": 1
+        },
+        {
+            "token": "var",
+            "type": TokenType.Keyword,
+            "line": 2
+        },
+        {
+            "token": "NUMERO",
+            "type": TokenType.Identifier,
+            "line": 3
+        },
+        {
+            "token": ":",
+            "type": TokenType.Delimiter,
+            "line": 3
+        },
+        {
+            "token": "integer",
+            "type": TokenType.Keyword,
+            "line": 3
+        },
+        {
+            "token": ";",
+            "type": TokenType.Delimiter,
+            "line": 3
+        },
+        {
+            "token": "begin",
+            "type": TokenType.Keyword,
+            "line": 4
+        },
+        {
+            "token": "NUMERO",
+            "type": TokenType.Identifier,
+            "line": 5
+        },
+        {
+            "token": "=",
+            "type": TokenType.ComparisonOperator,
+            "line": 5
+        },
+        {
+            "token": "-",
+            "type": TokenType.ArithmeticOperator,
+            "line": 5
+        },
+        {
+            "token": "3",
+            "type": TokenType.Number,
+            "line": 5
+        },
+        {
+            "token": "*",
+            "type": TokenType.ArithmeticOperator,
+            "line": 5
+        },
+        {
+            "token": "5",
+            "type": TokenType.Number,
+            "line": 5
+        },
+        {
+            "token": "+",
+            "type": TokenType.ArithmeticOperator,
+            "line": 5
+        },
+        {
+            "token": "7",
+            "type": TokenType.Number,
+            "line": 5
+        },
+        {
+            "token": "-",
+            "type": TokenType.ArithmeticOperator,
+            "line": 5
+        },
+        {
+            "token": "9",
+            "type": TokenType.Number,
+            "line": 5
+        },
+        {
+            "token": ";",
+            "type": TokenType.Delimiter,
+            "line": 5
+        },
+        {
+            "token": "if",
+            "type": TokenType.Keyword,
+            "line": 6
+        },
+        {
+            "token": "(",
+            "type": TokenType.Delimiter,
+            "line": 6
+        },
+        {
+            "token": "NUMERO",
+            "type": TokenType.Identifier,
+            "line": 6
+        },
+        {
+            "token": ">=",
+            "type": TokenType.ComparisonOperator,
+            "line": 6
+        },
+        {
+            "token": "20",
+            "type": TokenType.Number,
+            "line": 6
+        },
+        {
+            "token": ")",
+            "type": TokenType.Delimiter,
+            "line": 6
+        },
+        {
+            "token": "and",
+            "type": TokenType.Identifier,
+            "line": 6
+        },
+        {
+            "token": "(",
+            "type": TokenType.Delimiter,
+            "line": 6
+        },
+        {
+            "token": "NUMERO",
+            "type": TokenType.Identifier,
+            "line": 6
+        },
+        {
+            "token": "<=",
+            "type": TokenType.ComparisonOperator,
+            "line": 6
+        },
+        {
+            "token": "90",
+            "type": TokenType.Number,
+            "line": 6
+        },
+        {
+            "token": ")",
+            "type": TokenType.Delimiter,
+            "line": 6
+        },
+        {
+            "token": "then",
+            "type": TokenType.Keyword,
+            "line": 6
+        },
+        {
+            "token": "NUMERO",
+            "type": TokenType.Identifier,
+            "line": 7
+        },
+        {
+            "token": "=",
+            "type": TokenType.ComparisonOperator,
+            "line": 7
+        },
+        {
+            "token": "10",
+            "type": TokenType.Number,
+            "line": 7
+        },
+        {
+            "token": "*",
+            "type": TokenType.ArithmeticOperator,
+            "line": 7
+        },
+        {
+            "token": "3",
+            "type": TokenType.Number,
+            "line": 7
+        },
+        {
+            "token": "else",
+            "type": TokenType.Keyword,
+            "line": 8
+        },
+        {
+            "token": "NUMERO",
+            "type": TokenType.Identifier,
+            "line": 8
+        },
+        {
+            "token": "=",
+            "type": TokenType.ComparisonOperator,
+            "line": 8
+        },
+        {
+            "token": "10",
+            "type": TokenType.Number,
+            "line": 8
+        },
+        {
+            "token": "/",
+            "type": TokenType.ArithmeticOperator,
+            "line": 8
+        },
+        {
+            "token": "3",
+            "type": TokenType.Number,
+            "line": 8
+        },
+        {
+            "token": "end",
+            "type": TokenType.Keyword,
+            "line": 9
+        },
+        {
+            "token": ".",
+            "type": TokenType.Delimiter,
+            "line": 9
+        }
+    ]
+
+    assert actual == expected
+
+
+def test_test4_code():
+    actual = build_symbol_table('Test4.pas')
+    expected = []
+
+    assert actual == expected
+
+
+def test_test5_code():
+    actual = build_symbol_table('Test5.pas')
+    expected = []
+
+    assert actual == expected
