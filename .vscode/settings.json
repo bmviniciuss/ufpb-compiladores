@@ -1,5 +1,11 @@
 {
   "editor.formatOnSave": true,
   "python.linting.enabled": true,
-  "python.linting.lintOnSave": true
+  "python.linting.lintOnSave": true,
+  "python.testing.pytestArgs": [
+    "."
+  ],
+  "python.testing.unittestEnabled": false,
+  "python.testing.nosetestsEnabled": false,
+  "python.testing.pytestEnabled": true
 }

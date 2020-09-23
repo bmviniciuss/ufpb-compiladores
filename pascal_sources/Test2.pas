@@ -8,8 +8,8 @@ begin
    begin
       X := A;
       A := B;
-      B := X   {veja que o último comando de um bloco não possui o ;}
+      B := X   {veja que o ï¿½ltimo comando de um bloco nï¿½o possui o ;}
    end         {alguns alunos preferem implementar com ;}
 end.	       
 
-{gere erros sintáticos}
+{gere erros sintï¿½ticos}
