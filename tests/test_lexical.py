@@ -52,6 +52,64 @@ def test_basic_attribution():
     assert actual == expected
 
 
+def test_multiline_declaration():
+    src_code = '''
+       var
+        Area, Comprimento, Raio : real;
+    '''
+
+    actual = TokenReader().process(src_code)
+    expected = [
+        {
+            "token": "var",
+            "type": TokenType.Keyword,
+            "line": 1
+        },
+        {
+            "token": "Area",
+            "type": TokenType.Identifier,
+            "line": 2
+        },
+        {
+            "token": ",",
+            "type": TokenType.Delimiter,
+            "line": 2
+        },
+        {
+            "token": "Comprimento",
+            "type": TokenType.Identifier,
+            "line": 2
+        },
+        {
+            "token": ",",
+            "type": TokenType.Delimiter,
+            "line": 2
+        },
+        {
+            "token": "Raio",
+            "type": TokenType.Identifier,
+            "line": 2
+        },
+        {
+            "token": ":",
+            "type": TokenType.Delimiter,
+            "line": 2
+        },
+        {
+            "token": "real",
+            "type": TokenType.Keyword,
+            "line": 2
+        },
+        {
+            "token": ";",
+            "type": TokenType.Delimiter,
+            "line": 2
+        }
+    ]
+
+    assert actual == expected
+
+
 def test_parse_id_with_numbers():
     src_code = 'program Test1;'
     actual = TokenReader().process(src_code)
@@ -75,7 +133,7 @@ def test_parse_id_with_numbers():
 
 
 def test_test1_code():
-    actual = build_symbol_table('Test1.pas')
+    actual = build_symbol_table('Test1_sem_erro.pas')
 
     expected = [
         {
