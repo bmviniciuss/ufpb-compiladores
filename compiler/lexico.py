@@ -15,7 +15,8 @@ class TokenType(str, Enum):
     Delimiter = "Delimiter"
     AttributionOperator = "AttributionOperator"
     ComparisonOperator = "ComparisonOperator"
-    ArithmeticOperator = "ArithmeticOperator"
+    AdditiveOperators = "AdditiveOperators"
+    MultiplicativeOperators = "MultiplicativeOperators"
     Identifier = "Identifier"
     Integer = "Integer"
     RealNumber = "RealNumber"
@@ -28,8 +29,10 @@ Keyword = ['program', 'var', 'integer', 'real', 'boolean', 'procedure',
 Delimiter = [';', '.', ':', '(', ')', ',']
 AttributionOperator = [':=']
 ComparisonOperator = ['=', '<', '>', '<=', '>=', '<>']
-ArithmeticOperator = ['+', '-', '*', '/']
-Operator = ArithmeticOperator + ComparisonOperator + AttributionOperator
+AdditiveOperators = ['+', '-']
+MultiplicativeOperators = ['*', '/']
+Operator = AdditiveOperators + MultiplicativeOperators + \
+    ComparisonOperator + AttributionOperator
 Digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 ValidIdentifierPattern = r'^[a-zA-Z]([a-zA-Z0-9_])*$'
 ValidNumberPattern = r'^([0-9]+$|^[0-9]+\.[0-9]+$)'
@@ -44,8 +47,10 @@ def get_token_type(token):
         return TokenType.Delimiter
     elif token in AttributionOperator:
         return TokenType.AttributionOperator
-    elif token in ArithmeticOperator:
-        return TokenType.ArithmeticOperator
+    elif token in AdditiveOperators:
+        return TokenType.AdditiveOperators
+    elif token in MultiplicativeOperators:
+        return TokenType.MultiplicativeOperators
     elif token in ComparisonOperator:
         return TokenType.ComparisonOperator
     elif re.match(ValidIdentifierPattern, token):
