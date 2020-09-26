@@ -24,7 +24,7 @@ def test_basic_attribution():
         },
         {
             "token": "*",
-            "type": TokenType.ArithmeticOperator,
+            "type": TokenType.MultiplicativeOperators,
             "line": 1
         },
         {
@@ -34,7 +34,7 @@ def test_basic_attribution():
         },
         {
             "token": "*",
-            "type": TokenType.ArithmeticOperator,
+            "type": TokenType.MultiplicativeOperators,
             "line": 1
         },
         {
@@ -238,7 +238,7 @@ def test_test1_code():
         },
         {
             "token": "*",
-            "type": TokenType.ArithmeticOperator,
+            "type": TokenType.MultiplicativeOperators,
             "line": 6
         },
         {
@@ -248,7 +248,7 @@ def test_test1_code():
         },
         {
             "token": "*",
-            "type": TokenType.ArithmeticOperator,
+            "type": TokenType.MultiplicativeOperators,
             "line": 6
         },
         {
@@ -278,7 +278,7 @@ def test_test1_code():
         },
         {
             "token": "*",
-            "type": TokenType.ArithmeticOperator,
+            "type": TokenType.MultiplicativeOperators,
             "line": 7
         },
         {
@@ -288,7 +288,7 @@ def test_test1_code():
         },
         {
             "token": "*",
-            "type": TokenType.ArithmeticOperator,
+            "type": TokenType.MultiplicativeOperators,
             "line": 7
         },
         {
@@ -594,7 +594,7 @@ def test_test3_code():
         },
         {
             "token": "-",
-            "type": TokenType.ArithmeticOperator,
+            "type": TokenType.AdditiveOperators,
             "line": 5
         },
         {
@@ -604,7 +604,7 @@ def test_test3_code():
         },
         {
             "token": "*",
-            "type": TokenType.ArithmeticOperator,
+            "type": TokenType.MultiplicativeOperators,
             "line": 5
         },
         {
@@ -614,7 +614,7 @@ def test_test3_code():
         },
         {
             "token": "+",
-            "type": TokenType.ArithmeticOperator,
+            "type": TokenType.AdditiveOperators,
             "line": 5
         },
         {
@@ -624,7 +624,7 @@ def test_test3_code():
         },
         {
             "token": "-",
-            "type": TokenType.ArithmeticOperator,
+            "type": TokenType.AdditiveOperators,
             "line": 5
         },
         {
@@ -719,7 +719,7 @@ def test_test3_code():
         },
         {
             "token": "*",
-            "type": TokenType.ArithmeticOperator,
+            "type": TokenType.MultiplicativeOperators,
             "line": 7
         },
         {
@@ -749,7 +749,7 @@ def test_test3_code():
         },
         {
             "token": "/",
-            "type": TokenType.ArithmeticOperator,
+            "type": TokenType.MultiplicativeOperators,
             "line": 8
         },
         {
@@ -777,387 +777,387 @@ def test_test4_code():
     expected = [
         {
             "token": "program",
-            "type": "Keyword",
+            "type": TokenType.Keyword,
             "line": 1
         },
         {
             "token": "Test4",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 1
         },
         {
             "token": ";",
-            "type": "Delimiter",
+            "type": TokenType.Delimiter,
             "line": 1
         },
         {
             "token": "var",
-            "type": "Keyword",
+            "type": TokenType.Keyword,
             "line": 2
         },
         {
             "token": "A",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 3
         },
         {
             "token": ",",
-            "type": "Delimiter",
+            "type": TokenType.Delimiter,
             "line": 3
         },
         {
             "token": "B",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 3
         },
         {
             "token": ",",
-            "type": "Delimiter",
+            "type": TokenType.Delimiter,
             "line": 3
         },
         {
             "token": "R",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 3
         },
         {
             "token": ",",
-            "type": "Delimiter",
+            "type": TokenType.Delimiter,
             "line": 3
         },
         {
             "token": "I",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 3
         },
         {
             "token": ":",
-            "type": "Delimiter",
+            "type": TokenType.Delimiter,
             "line": 3
         },
         {
             "token": "integer",
-            "type": "Keyword",
+            "type": TokenType.Keyword,
             "line": 3
         },
         {
             "token": ";",
-            "type": "Delimiter",
+            "type": TokenType.Delimiter,
             "line": 3
         },
         {
             "token": "procedure",
-            "type": "Keyword",
+            "type": TokenType.Keyword,
             "line": 5
         },
         {
             "token": "teste",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 5
         },
         {
             "token": "(",
-            "type": "Delimiter",
+            "type": TokenType.Delimiter,
             "line": 5
         },
         {
             "token": "A",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 5
         },
         {
             "token": ":",
-            "type": "Delimiter",
+            "type": TokenType.Delimiter,
             "line": 5
         },
         {
             "token": "integer",
-            "type": "Keyword",
+            "type": TokenType.Keyword,
             "line": 5
         },
         {
             "token": ",",
-            "type": "Delimiter",
+            "type": TokenType.Delimiter,
             "line": 5
         },
         {
             "token": "B",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 5
         },
         {
             "token": ":",
-            "type": "Delimiter",
+            "type": TokenType.Delimiter,
             "line": 5
         },
         {
             "token": "real",
-            "type": "Keyword",
+            "type": TokenType.Keyword,
             "line": 5
         },
         {
             "token": ")",
-            "type": "Delimiter",
+            "type": TokenType.Delimiter,
             "line": 5
         },
         {
             "token": ";",
-            "type": "Delimiter",
+            "type": TokenType.Delimiter,
             "line": 5
         },
         {
             "token": "var",
-            "type": "Keyword",
+            "type": TokenType.Keyword,
             "line": 6
         },
         {
             "token": "S",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 7
         },
         {
             "token": ",",
-            "type": "Delimiter",
+            "type": TokenType.Delimiter,
             "line": 7
         },
         {
             "token": "X",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 7
         },
         {
             "token": ":",
-            "type": "Delimiter",
+            "type": TokenType.Delimiter,
             "line": 7
         },
         {
             "token": "real",
-            "type": "Keyword",
+            "type": TokenType.Keyword,
             "line": 7
         },
         {
             "token": ";",
-            "type": "Delimiter",
+            "type": TokenType.Delimiter,
             "line": 7
         },
         {
             "token": "begin",
-            "type": "Keyword",
+            "type": TokenType.Keyword,
             "line": 8
         },
         {
             "token": "S",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 9
         },
         {
             "token": ":=",
-            "type": "AttributionOperator",
+            "type": TokenType.AttributionOperator,
             "line": 9
         },
         {
             "token": "A",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 9
         },
         {
             "token": "+",
-            "type": "ArithmeticOperator",
+            "type": TokenType.AdditiveOperators,
             "line": 9
         },
         {
             "token": "B",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 9
         },
         {
             "token": "*",
-            "type": "ArithmeticOperator",
+            "type": TokenType.MultiplicativeOperators,
             "line": 9
         },
         {
             "token": "X",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 9
         },
         {
             "token": "end",
-            "type": "Keyword",
+            "type": TokenType.Keyword,
             "line": 10
         },
         {
             "token": "begin",
-            "type": "Keyword",
+            "type": TokenType.Keyword,
             "line": 12
         },
         {
             "token": "while",
-            "type": "Keyword",
+            "type": TokenType.Keyword,
             "line": 13
         },
         {
             "token": "(",
-            "type": "Delimiter",
+            "type": TokenType.Delimiter,
             "line": 13
         },
         {
             "token": "I",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 13
         },
         {
             "token": "<=",
-            "type": "ComparisonOperator",
+            "type": TokenType.ComparisonOperator,
             "line": 13
         },
         {
             "token": "5",
-            "type": "Integer",
+            "type": TokenType.Integer,
             "line": 13
         },
         {
             "token": ")",
-            "type": "Delimiter",
+            "type": TokenType.Delimiter,
             "line": 13
         },
         {
             "token": "do",
-            "type": "Keyword",
+            "type": TokenType.Keyword,
             "line": 13
         },
         {
             "token": "begin",
-            "type": "Keyword",
+            "type": TokenType.Keyword,
             "line": 14
         },
         {
             "token": "A",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 15
         },
         {
             "token": ":=",
-            "type": "AttributionOperator",
+            "type": TokenType.AttributionOperator,
             "line": 15
         },
         {
             "token": "A",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 15
         },
         {
             "token": "+",
-            "type": "ArithmeticOperator",
+            "type": TokenType.AdditiveOperators,
             "line": 15
         },
         {
             "token": "1",
-            "type": "Integer",
+            "type": TokenType.Integer,
             "line": 15
         },
         {
             "token": ";",
-            "type": "Delimiter",
+            "type": TokenType.Delimiter,
             "line": 15
         },
         {
             "token": "B",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 16
         },
         {
             "token": ":=",
-            "type": "AttributionOperator",
+            "type": TokenType.AttributionOperator,
             "line": 16
         },
         {
             "token": "B",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 16
         },
         {
             "token": "-",
-            "type": "ArithmeticOperator",
+            "type": TokenType.AdditiveOperators,
             "line": 16
         },
         {
             "token": "1",
-            "type": "Integer",
+            "type": TokenType.Integer,
             "line": 16
         },
         {
             "token": ";",
-            "type": "Delimiter",
+            "type": TokenType.Delimiter,
             "line": 16
         },
         {
             "token": "R",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 17
         },
         {
             "token": ":=",
-            "type": "AttributionOperator",
+            "type": TokenType.AttributionOperator,
             "line": 17
         },
         {
             "token": "A",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 17
         },
         {
             "token": "+",
-            "type": "ArithmeticOperator",
+            "type": TokenType.AdditiveOperators,
             "line": 17
         },
         {
             "token": "B",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 17
         },
         {
             "token": ";",
-            "type": "Delimiter",
+            "type": TokenType.Delimiter,
             "line": 17
         },
         {
             "token": "I",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 18
         },
         {
             "token": ":=",
-            "type": "AttributionOperator",
+            "type": TokenType.AttributionOperator,
             "line": 18
         },
         {
             "token": "I",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 18
         },
         {
             "token": "+",
-            "type": "ArithmeticOperator",
+            "type": TokenType.AdditiveOperators,
             "line": 18
         },
         {
             "token": "1",
-            "type": "Integer",
+            "type": TokenType.Integer,
             "line": 18
         },
         {
             "token": "end",
-            "type": "Keyword",
+            "type": TokenType.Keyword,
             "line": 19
         },
         {
             "token": "end",
-            "type": "Keyword",
+            "type": TokenType.Keyword,
             "line": 20
         },
         {
             "token": ".",
-            "type": "Delimiter",
+            "type": TokenType.Delimiter,
             "line": 20
         }
     ]
@@ -1170,217 +1170,217 @@ def test_test5_code():
     expected = [
         {
             "token": "program",
-            "type": "Keyword",
+            "type": TokenType.Keyword,
             "line": 1
         },
         {
             "token": "Test5",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 1
         },
         {
             "token": ";",
-            "type": "Delimiter",
+            "type": TokenType.Delimiter,
             "line": 1
         },
         {
             "token": "var",
-            "type": "Keyword",
+            "type": TokenType.Keyword,
             "line": 2
         },
         {
             "token": "A",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 3
         },
         {
             "token": ",",
-            "type": "Delimiter",
+            "type": TokenType.Delimiter,
             "line": 3
         },
         {
             "token": "B",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 3
         },
         {
             "token": ",",
-            "type": "Delimiter",
+            "type": TokenType.Delimiter,
             "line": 3
         },
         {
             "token": "R",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 3
         },
         {
             "token": ",",
-            "type": "Delimiter",
+            "type": TokenType.Delimiter,
             "line": 3
         },
         {
             "token": "I",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 3
         },
         {
             "token": ":",
-            "type": "Delimiter",
+            "type": TokenType.Delimiter,
             "line": 3
         },
         {
             "token": "integer",
-            "type": "Keyword",
+            "type": TokenType.Keyword,
             "line": 3
         },
         {
             "token": ";",
-            "type": "Delimiter",
+            "type": TokenType.Delimiter,
             "line": 3
         },
         {
             "token": "begin",
-            "type": "Keyword",
+            "type": TokenType.Keyword,
             "line": 4
         },
         {
             "token": "for",
-            "type": "Keyword",
+            "type": TokenType.Keyword,
             "line": 5
         },
         {
             "token": "I",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 5
         },
         {
             "token": ":=",
-            "type": "AttributionOperator",
+            "type": TokenType.AttributionOperator,
             "line": 5
         },
         {
             "token": "1",
-            "type": "Integer",
+            "type": TokenType.Integer,
             "line": 5
         },
         {
             "token": "to",
-            "type": "Keyword",
+            "type": TokenType.Keyword,
             "line": 5
         },
         {
             "token": "5",
-            "type": "Integer",
+            "type": TokenType.Integer,
             "line": 5
         },
         {
             "token": "do",
-            "type": "Keyword",
+            "type": TokenType.Keyword,
             "line": 5
         },
         {
             "token": "begin",
-            "type": "Keyword",
+            "type": TokenType.Keyword,
             "line": 6
         },
         {
             "token": "A",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 7
         },
         {
             "token": ":=",
-            "type": "AttributionOperator",
+            "type": TokenType.AttributionOperator,
             "line": 7
         },
         {
             "token": "A",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 7
         },
         {
             "token": "*",
-            "type": "ArithmeticOperator",
+            "type": TokenType.MultiplicativeOperators,
             "line": 7
         },
         {
             "token": "A",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 7
         },
         {
             "token": ";",
-            "type": "Delimiter",
+            "type": TokenType.Delimiter,
             "line": 7
         },
         {
             "token": "B",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 8
         },
         {
             "token": ":=",
-            "type": "AttributionOperator",
+            "type": TokenType.AttributionOperator,
             "line": 8
         },
         {
             "token": "B",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 8
         },
         {
             "token": "*",
-            "type": "ArithmeticOperator",
+            "type": TokenType.MultiplicativeOperators,
             "line": 8
         },
         {
             "token": "A",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 8
         },
         {
             "token": ";",
-            "type": "Delimiter",
+            "type": TokenType.Delimiter,
             "line": 8
         },
         {
             "token": "R",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 9
         },
         {
             "token": ":=",
-            "type": "AttributionOperator",
+            "type": TokenType.AttributionOperator,
             "line": 9
         },
         {
             "token": "A",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 9
         },
         {
             "token": "+",
-            "type": "ArithmeticOperator",
+            "type": TokenType.AdditiveOperators,
             "line": 9
         },
         {
             "token": "B",
-            "type": "Identifier",
+            "type": TokenType.Identifier,
             "line": 9
         },
         {
             "token": "end",
-            "type": "Keyword",
+            "type": TokenType.Keyword,
             "line": 10
         },
         {
             "token": "end",
-            "type": "Keyword",
+            "type": TokenType.Keyword,
             "line": 11
         },
         {
             "token": ".",
-            "type": "Delimiter",
+            "type": TokenType.Delimiter,
             "line": 11
         }
     ]
