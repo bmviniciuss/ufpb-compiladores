@@ -19,7 +19,7 @@ def test_basic_attribution():
         },
         {
             "token": "3.14",
-            "type": TokenType.Number,
+            "type": TokenType.RealNumber,
             "line": 1
         },
         {
@@ -213,7 +213,7 @@ def test_test1_code():
         },
         {
             "token": "4",
-            "type": TokenType.Number,
+            "type": TokenType.Integer,
             "line": 5
         },
         {
@@ -233,7 +233,7 @@ def test_test1_code():
         },
         {
             "token": "3.14",
-            "type": TokenType.Number,
+            "type": TokenType.RealNumber,
             "line": 6
         },
         {
@@ -273,7 +273,7 @@ def test_test1_code():
         },
         {
             "token": "2",
-            "type": TokenType.Number,
+            "type": TokenType.Integer,
             "line": 7
         },
         {
@@ -283,7 +283,7 @@ def test_test1_code():
         },
         {
             "token": "3.14",
-            "type": TokenType.Number,
+            "type": TokenType.RealNumber,
             "line": 7
         },
         {
@@ -391,7 +391,7 @@ def test_test2_code():
         },
         {
             "token": "5",
-            "type": TokenType.Number,
+            "type": TokenType.Integer,
             "line": 5
         },
         {
@@ -411,7 +411,7 @@ def test_test2_code():
         },
         {
             "token": "10",
-            "type": TokenType.Number,
+            "type": TokenType.Integer,
             "line": 6
         },
         {
@@ -599,7 +599,7 @@ def test_test3_code():
         },
         {
             "token": "3",
-            "type": TokenType.Number,
+            "type": TokenType.Integer,
             "line": 5
         },
         {
@@ -609,7 +609,7 @@ def test_test3_code():
         },
         {
             "token": "5",
-            "type": TokenType.Number,
+            "type": TokenType.Integer,
             "line": 5
         },
         {
@@ -619,7 +619,7 @@ def test_test3_code():
         },
         {
             "token": "7",
-            "type": TokenType.Number,
+            "type": TokenType.Integer,
             "line": 5
         },
         {
@@ -629,7 +629,7 @@ def test_test3_code():
         },
         {
             "token": "9",
-            "type": TokenType.Number,
+            "type": TokenType.Integer,
             "line": 5
         },
         {
@@ -659,7 +659,7 @@ def test_test3_code():
         },
         {
             "token": "20",
-            "type": TokenType.Number,
+            "type": TokenType.Integer,
             "line": 6
         },
         {
@@ -689,7 +689,7 @@ def test_test3_code():
         },
         {
             "token": "90",
-            "type": TokenType.Number,
+            "type": TokenType.Integer,
             "line": 6
         },
         {
@@ -714,7 +714,7 @@ def test_test3_code():
         },
         {
             "token": "10",
-            "type": TokenType.Number,
+            "type": TokenType.Integer,
             "line": 7
         },
         {
@@ -724,7 +724,7 @@ def test_test3_code():
         },
         {
             "token": "3",
-            "type": TokenType.Number,
+            "type": TokenType.Integer,
             "line": 7
         },
         {
@@ -744,7 +744,7 @@ def test_test3_code():
         },
         {
             "token": "10",
-            "type": TokenType.Number,
+            "type": TokenType.Integer,
             "line": 8
         },
         {
@@ -754,7 +754,7 @@ def test_test3_code():
         },
         {
             "token": "3",
-            "type": TokenType.Number,
+            "type": TokenType.Integer,
             "line": 8
         },
         {
@@ -1012,7 +1012,7 @@ def test_test4_code():
         },
         {
             "token": "5",
-            "type": "Number",
+            "type": "Integer",
             "line": 13
         },
         {
@@ -1052,7 +1052,7 @@ def test_test4_code():
         },
         {
             "token": "1",
-            "type": "Number",
+            "type": "Integer",
             "line": 15
         },
         {
@@ -1082,7 +1082,7 @@ def test_test4_code():
         },
         {
             "token": "1",
-            "type": "Number",
+            "type": "Integer",
             "line": 16
         },
         {
@@ -1142,7 +1142,7 @@ def test_test4_code():
         },
         {
             "token": "1",
-            "type": "Number",
+            "type": "Integer",
             "line": 18
         },
         {
@@ -1260,7 +1260,7 @@ def test_test5_code():
         },
         {
             "token": "1",
-            "type": "Number",
+            "type": "Integer",
             "line": 5
         },
         {
@@ -1270,7 +1270,7 @@ def test_test5_code():
         },
         {
             "token": "5",
-            "type": "Number",
+            "type": "Integer",
             "line": 5
         },
         {
