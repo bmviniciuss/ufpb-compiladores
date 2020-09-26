@@ -17,7 +17,8 @@ class TokenType(str, Enum):
     ComparisonOperator = "ComparisonOperator"
     ArithmeticOperator = "ArithmeticOperator"
     Identifier = "Identifier"
-    Number = "Number"
+    Integer = "Integer"
+    RealNumber = "RealNumber"
     Unknown = "Unknown"
 
 
@@ -32,6 +33,8 @@ Operator = ArithmeticOperator + ComparisonOperator + AttributionOperator
 Digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 ValidIdentifierPattern = r'^[a-zA-Z]([a-zA-Z0-9_])*$'
 ValidNumberPattern = r'^([0-9]+$|^[0-9]+\.[0-9]+$)'
+ValidIntegerPattern = r'^[0-9]+$'
+ValidRealNumberPattern = r'^[0-9]+\.[0-9]+$'
 
 
 def get_token_type(token):
@@ -47,8 +50,10 @@ def get_token_type(token):
         return TokenType.ComparisonOperator
     elif re.match(ValidIdentifierPattern, token):
         return TokenType.Identifier
-    elif re.match(ValidNumberPattern, token):
-        return TokenType.Number
+    elif re.match(ValidIntegerPattern, token):
+        return TokenType.Integer
+    elif re.match(ValidRealNumberPattern, token):
+        return TokenType.RealNumber
     else:
         return TokenType.Unknown
 
