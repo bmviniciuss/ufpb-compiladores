@@ -6,10 +6,15 @@ $ source env/bin/activate
 (env) $ pip install .
 ```
 
-# Run
+# Run Lexico
 
 ```bash
-(env) $ python main.py
+(env) $ python main.py lexico [Path to pascal source file] 
+```
+
+Example:
+```bash
+(env) $ python main.py lexico ./pascal_sources/Test4.pas  
 ```
 
 # Run a single module
