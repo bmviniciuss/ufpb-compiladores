@@ -184,8 +184,8 @@ class TokenReader():
         return data
 
 
-def build_symbol_table(path, relative=False):
-    code = strip_comments(path if relative else get_src_code(path))
+def build_symbol_table(path, relative_path=False):
+    code = strip_comments(get_src_code(path, relative_path))
     return TokenReader().process(code)
 
 
