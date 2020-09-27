@@ -152,28 +152,35 @@ class TokenReader():
 
     def process(self, src):
         self.stack = list(reversed(src.strip()))
+        data = {}
 
         while len(self.stack) > 0:
-            self.current_char = self.stack.pop()
-            if re.search('[a-zA-Z]', self.current_char):
-                self.process_word()
-            elif self.current_char in Whitespace:
-                self.process_Whitespace()
-            elif self.current_char in Operator:
-                self.process_operator()
-            elif self.current_char in Delimiter:
-                self.process_delimiter()
-            elif self.current_char in Digits:
-                self.process_number()
-            else:
-                raise ParseError("Couldn't parse token %s in line %s" % (
-                    self.current_char, self.current_line))
+            try:
+                self.current_char = self.stack.pop()
+                if re.search('[a-zA-Z]', self.current_char):
+                    self.process_word()
+                elif self.current_char in Whitespace:
+                    self.process_Whitespace()
+                elif self.current_char in Operator:
+                    self.process_operator()
+                elif self.current_char in Delimiter:
+                    self.process_delimiter()
+                elif self.current_char in Digits:
+                    self.process_number()
+                else:
+                    raise ParseError("Couldn't parse token '%s' in line %s" % (
+                        self.current_char, self.current_line))
+            except ParseError as e:
+                data['error'] = str(e)
+                break
 
-        return self.token_list
+        data['symbol_table'] = self.token_list
+        data['total_symbols'] = len(self.token_list)
+        return data
 
 
-def build_symbol_table(path):
-    code = strip_comments(get_src_code(path))
+def build_symbol_table(path, relative=False):
+    code = strip_comments(path if relative else get_src_code(path))
     return TokenReader().process(code)
 
 
