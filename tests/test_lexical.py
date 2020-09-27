@@ -4,7 +4,7 @@ import json
 
 def test_basic_attribution():
     actual = TokenReader().process(
-        'Area := 3.14 * Raio * Raio;')
+        'Area := 3.14 * Raio * Raio;')['symbol_table']
 
     expected = [
         {
@@ -58,7 +58,7 @@ def test_multiline_declaration():
         Area, Comprimento, Raio : real;
     '''
 
-    actual = TokenReader().process(src_code)
+    actual = TokenReader().process(src_code)['symbol_table']
     expected = [
         {
             "token": "var",
@@ -112,7 +112,7 @@ def test_multiline_declaration():
 
 def test_parse_id_with_numbers():
     src_code = 'program Test1;'
-    actual = TokenReader().process(src_code)
+    actual = TokenReader().process(src_code)['symbol_table']
     expected = [
         {
             "token": "program",
@@ -133,7 +133,7 @@ def test_parse_id_with_numbers():
 
 
 def test_test1_code():
-    actual = build_symbol_table('Test1_sem_erro.pas')
+    actual = build_symbol_table('Test1_sem_erro.pas')['symbol_table']
 
     expected = [
         {
@@ -312,7 +312,7 @@ def test_test1_code():
 
 
 def test_test2_code():
-    actual = build_symbol_table('Test2.pas')
+    actual = build_symbol_table('Test2.pas')['symbol_table']
     expected = [
         {
             "token": "program",
@@ -535,7 +535,7 @@ def test_test2_code():
 
 
 def test_test3_code():
-    actual = build_symbol_table('Test3.pas')
+    actual = build_symbol_table('Test3.pas')['symbol_table']
     expected = [
         {
             "token": "program",
@@ -773,7 +773,7 @@ def test_test3_code():
 
 
 def test_test4_code():
-    actual = build_symbol_table('Test4.pas')
+    actual = build_symbol_table('Test4.pas')['symbol_table']
     expected = [
         {
             "token": "program",
@@ -1166,7 +1166,7 @@ def test_test4_code():
 
 
 def test_test5_code():
-    actual = build_symbol_table('Test5.pas')
+    actual = build_symbol_table('Test5.pas')['symbol_table']
     expected = [
         {
             "token": "program",
