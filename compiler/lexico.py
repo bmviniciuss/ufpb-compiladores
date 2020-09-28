@@ -88,7 +88,6 @@ class TokenReader():
             terminals ([type]): List of symbols we should stop at
             whitelist (list, optional): Exclusion list for terminals, for convenience. Defaults to [].
         """
-        # TODO: Deal with end of file error
         tmp_token = self.current_char
         while len(self.stack) > 0:
             char = self.stack.pop()
@@ -106,7 +105,9 @@ class TokenReader():
         Args:
             valid_pairs ([type]): List of pairs we're looking for when peeking ahead
         """
-        # TODO: Deal with end of file error
+        if not len(self.stack) > 0:
+            return
+
         first = self.current_char
         second = self.stack.pop()
         pair = first + second
