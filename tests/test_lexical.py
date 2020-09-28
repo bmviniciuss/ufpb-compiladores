@@ -1,5 +1,7 @@
 from compiler.lexico import TokenReader, build_symbol_table, TokenType
 import json
+from pytest import raises
+from compiler import exceptions
 
 
 def test_basic_attribution():
@@ -47,6 +49,33 @@ def test_basic_attribution():
             "type": TokenType.Delimiter,
             "line": 1
         }
+    ]
+
+    assert actual == expected
+
+
+def test_error_on_invalid_symbol():
+    src_code = '''
+       var
+        & Area, Comprimento, Raio : real;
+    '''
+
+    actual = TokenReader().process(src_code)
+    assert actual['error'] == "Couldn't parse token '&' in line 2"
+
+
+def test_no_whitespace_separator():
+    src_code = '''
+        var Area2:=4;
+    '''
+    actual = TokenReader().process(src_code)['symbol_table']
+
+    expected = [
+        {'line': 1, 'token': 'var', 'type': TokenType.Keyword},
+        {'line': 1, 'token': 'Area2', 'type': TokenType.Identifier},
+        {'line': 1, 'token': ':=', 'type': TokenType.AttributionOperator},
+        {'line': 1, 'token': '4', 'type': TokenType.Integer},
+        {'line': 1, 'token': ';', 'type': TokenType.Delimiter}
     ]
 
     assert actual == expected
@@ -133,9 +162,10 @@ def test_parse_id_with_numbers():
 
 
 def test_test1_code():
-    actual = build_symbol_table('Test1_sem_erro.pas')['symbol_table']
+    actual = build_symbol_table('Test1.pas')
 
-    expected = [
+    expected_error = "Couldn't parse token '&' in line 4"
+    expected_symbols = [
         {
             "token": "program",
             "type": TokenType.Keyword,
@@ -196,119 +226,10 @@ def test_test1_code():
             "type": TokenType.Delimiter,
             "line": 3
         },
-        {
-            "token": "begin",
-            "type": TokenType.Keyword,
-            "line": 4
-        },
-        {
-            "token": "Raio",
-            "type": TokenType.Identifier,
-            "line": 5
-        },
-        {
-            "token": ":=",
-            "type": TokenType.AttributionOperator,
-            "line": 5
-        },
-        {
-            "token": "4",
-            "type": TokenType.Integer,
-            "line": 5
-        },
-        {
-            "token": ";",
-            "type": TokenType.Delimiter,
-            "line": 5
-        },
-        {
-            "token": "Area",
-            "type": TokenType.Identifier,
-            "line": 6
-        },
-        {
-            "token": ":=",
-            "type": TokenType.AttributionOperator,
-            "line": 6
-        },
-        {
-            "token": "3.14",
-            "type": TokenType.RealNumber,
-            "line": 6
-        },
-        {
-            "token": "*",
-            "type": TokenType.MultiplicativeOperators,
-            "line": 6
-        },
-        {
-            "token": "Raio",
-            "type": TokenType.Identifier,
-            "line": 6
-        },
-        {
-            "token": "*",
-            "type": TokenType.MultiplicativeOperators,
-            "line": 6
-        },
-        {
-            "token": "Raio",
-            "type": TokenType.Identifier,
-            "line": 6
-        },
-        {
-            "token": ";",
-            "type": TokenType.Delimiter,
-            "line": 6
-        },
-        {
-            "token": "Comprimento",
-            "type": TokenType.Identifier,
-            "line": 7
-        },
-        {
-            "token": ":=",
-            "type": TokenType.AttributionOperator,
-            "line": 7
-        },
-        {
-            "token": "2",
-            "type": TokenType.Integer,
-            "line": 7
-        },
-        {
-            "token": "*",
-            "type": TokenType.MultiplicativeOperators,
-            "line": 7
-        },
-        {
-            "token": "3.14",
-            "type": TokenType.RealNumber,
-            "line": 7
-        },
-        {
-            "token": "*",
-            "type": TokenType.MultiplicativeOperators,
-            "line": 7
-        },
-        {
-            "token": "Raio",
-            "type": TokenType.Identifier,
-            "line": 7
-        },
-        {
-            "token": "end",
-            "type": TokenType.Keyword,
-            "line": 8
-        },
-        {
-            "token": ".",
-            "type": TokenType.Delimiter,
-            "line": 8
-        }
     ]
 
-    assert actual == expected
+    assert actual['error'] == expected_error
+    assert actual['symbol_table'] == expected_symbols
 
 
 def test_test2_code():
