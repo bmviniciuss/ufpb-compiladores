@@ -1,7 +1,6 @@
-from compiler.lexico import TokenReader, build_symbol_table, TokenType
-import json
-from pytest import raises
 from compiler import exceptions
+import json
+from compiler.lexico import TokenReader, build_symbol_table, TokenType
 
 
 def test_basic_attribution():
