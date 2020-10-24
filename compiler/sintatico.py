@@ -1,12 +1,12 @@
 from compiler.utils import get_symbol_table
-from compiler.types import TokenType
+from compiler.types import TokenType, TokenValueRegex
 import logging
 import json
+import re
+
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
-
-PROGRAM_KEYWORD = "program"
 
 
 class SyntacticAnalyzer():
@@ -14,9 +14,12 @@ class SyntacticAnalyzer():
         self.current_token = ""
         self.stack = []
 
-    def compare_token(self, token_type, token):
-        return self.current_token['type'] == token_type \
-            and token == self.current_token['token']
+    def compare_token(self, token_type, token_regex):
+        return self.compare_token_type(token_type) \
+            and self.compare_token_value(token_regex)
+
+    def compare_token_value(self, token_regex):
+        return re.match(token_regex, self.current_token['token'])
 
     def compare_token_type(self, token_type):
         return self.current_token['type'] == token_type
@@ -37,7 +40,7 @@ class SyntacticAnalyzer():
         while len(self.stack) > 0:
             self.current_token = self.stack.pop()
             logger.debug(self.current_token)
-            if self.compare_token(TokenType.Keyword, PROGRAM_KEYWORD):
+            if self.compare_token(TokenType.Keyword, TokenValueRegex.PROGRAM):
                 self.current_token = self.stack.pop()
 
                 if self.compare_token_type(TokenType.Identifier):

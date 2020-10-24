@@ -1,4 +1,5 @@
 from enum import Enum, auto
+import re
 
 
 class TokenType(str, Enum):
@@ -12,3 +13,7 @@ class TokenType(str, Enum):
     Integer = "Integer"
     RealNumber = "RealNumber"
     Unknown = "Unknown"
+
+
+class TokenValueRegex(str, Enum):
+    PROGRAM = r'^(program|PROGRAM)$'
