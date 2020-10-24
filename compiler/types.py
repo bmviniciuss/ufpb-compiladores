@@ -17,3 +17,9 @@ class TokenType(str, Enum):
 
 class TokenValueRegex(str, Enum):
     PROGRAM = r'^(program|PROGRAM)$'
+    VAR = r'^(var|VAR)$'
+    COLON = r'^(:)$'
+    SEMICOLON = r'^(;)$'
+    POINT = r'^(.)$'
+    COMMA = r'^(,)$'
+    IDENTIFIER_TYPE = r'^(integer|real|boolean|INTEGER|REAL|BOOLEAN)$'
