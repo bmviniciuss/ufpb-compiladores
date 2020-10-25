@@ -23,3 +23,5 @@ class TokenValueRegex(str, Enum):
     POINT = r'^(.)$'
     COMMA = r'^(,)$'
     IDENTIFIER_TYPE = r'^(integer|real|boolean|INTEGER|REAL|BOOLEAN)$'
+    BEGIN = r'^(begin|BEGIN)$'
+    END = r'^(end|END)$'

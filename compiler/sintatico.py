@@ -28,8 +28,21 @@ class SyntacticAnalyzer():
     def compare_token_type(self, token_type):
         return self.current_token['type'] == token_type
 
-    def process_compound_command(self):
+    def optional_commands(self):
         pass
+
+    def process_compound_command(self):
+        if self.compare_token(TokenType.Keyword, TokenValueRegex.TokenValueRegex):
+            self.get_next_token()
+            self.optional_commands()
+
+            if self.compare_token(TokenType.Keyword, TokenValueRegex.END):
+                self.get_next_token()
+            else:
+                raise Exception()
+
+        else:
+            raise Exception()
 
     def process_sub_programs_declararion(self):
         pass
@@ -86,6 +99,8 @@ class SyntacticAnalyzer():
     def process_type(self):
         if not self.compare_token(TokenType.Keyword, TokenValueRegex.IDENTIFIER_TYPE):
             raise Exception()
+        else:
+            self.get_next_token()
 
     def process(self, token_table):
         self.stack = list(reversed(token_table))
