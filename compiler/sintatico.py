@@ -160,12 +160,12 @@ class SyntacticAnalyzer():
 
     def process_variables_list_declaration(self):
         self.process_identifiers_list()
-        self.internal_variables_list()
+        self.internal_process_variables_list()
 
     def process_variables_list_declaration_2(self):
         if self.compare_token_type(TokenType.Identifier):
             self.process_identifiers_list()
-            self.internal_variables_list()
+            self.internal_process_variables_list()
         else:
             self.get_next_token()
 
