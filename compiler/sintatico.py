@@ -171,24 +171,28 @@ class SyntacticAnalyzer():
 
     def process_params_list(self):
         self.process_identifiers_list()
-        if self.compare_token(TokenType.Delimiter, TokenValueRegex.COLON):
+        if self.compare_token_value(TokenValueRegex.COLON):
             self.get_next_token()
             self.process_type()
             self.process_params_list_2()
         else:
-            raise Exception('Esperado ":" apos lista de identificadoers')
+            raise Exception(self.format_error_message(
+                'Esperado ":" apos lista de identificadoers'))
 
     def process_params_list_2(self):
-        if self.compare_token(TokenType.Delimiter, TokenValueRegex.SEMICOLON):
+        if self.compare_token_value(TokenValueRegex.SEMICOLON):
             self.get_next_token()
             self.process_identifiers_list()
 
-            if self.compare_token(TokenType.Delimiter, TokenValueRegex.COLON):
+            if self.compare_token_value(TokenValueRegex.COLON):
                 self.get_next_token()
                 self.process_type()
                 self.process_params_list_2()
             else:
-                raise Exception('Esperado  ":" apos lista de identificadoers')
+                raise Exception(self.format_error_message(
+                    'Esperado  ":" apos lista de identificadoers'))
+        else:
+            self.get_next_token()
 
     def process_compound_command(self):
         if self.compare_token(TokenType.Keyword, TokenValueRegex.BEGIN):
