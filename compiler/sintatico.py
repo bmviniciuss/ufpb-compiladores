@@ -117,6 +117,8 @@ class SyntacticAnalyzer():
 
             else:
                 raise Exception('Delimitador ; esperado')
+        else:
+            self.get_next_token()
 
     def process_sub_programs_declararion_2(self):
         if self.compare_token(TokenType.Keyword, TokenValueRegex.PROCEDURE):
@@ -128,9 +130,11 @@ class SyntacticAnalyzer():
 
             else:
                 raise Exception('Delimitador ; esperado')
+        else:
+            self.get_next_token()
 
     def process_sub_program_declaration(self):
-        if self.compare_token(TokenType.Keyword, TokenValueRegex.PROCEDURE):
+        if self.compare_token_value(TokenValueRegex.PROCEDURE):
             self.get_next_token()
             if self.compare_token_type(TokenType.Identifier):
                 self.get_next_token()
