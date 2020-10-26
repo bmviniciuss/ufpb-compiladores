@@ -36,8 +36,6 @@ class SyntacticAnalyzer():
         if self.compare_token_value(TokenValueRegex.VAR):
             self.get_next_token()
             self.process_variables_list_declaration()
-        else:
-            self.get_next_token()
 
     def process_variables_list_declaration(self):
         self.process_identifiers_list()
@@ -82,9 +80,6 @@ class SyntacticAnalyzer():
                         "Error: delimiter ':' was expected."
                     ))
 
-        else:
-            self.get_next_token()
-
     def process_identifiers_list(self):
         if self.compare_token_type(TokenType.Identifier):
             self.get_next_token()
@@ -113,8 +108,6 @@ class SyntacticAnalyzer():
 
             else:
                 raise Exception('Delimitador ; esperado')
-        else:
-            self.get_next_token()
 
     def process_sub_programs_declararion_2(self):
         if self.compare_token(TokenType.Keyword, TokenValueRegex.PROCEDURE):
@@ -126,8 +119,6 @@ class SyntacticAnalyzer():
 
             else:
                 raise Exception('Delimitador ; esperado')
-        else:
-            self.get_next_token()
 
     def process_sub_program_declaration(self):
         if self.compare_token_value(TokenValueRegex.PROCEDURE):
@@ -162,8 +153,6 @@ class SyntacticAnalyzer():
                     self.format_error_message(
                         '")" esperado apos list da parametros.')
                 )
-        else:
-            self.get_next_token()
 
     def process_params_list(self):
         self.process_identifiers_list()
@@ -187,8 +176,6 @@ class SyntacticAnalyzer():
             else:
                 raise Exception(self.format_error_message(
                     'Esperado  ":" apos lista de identificadoers'))
-        else:
-            self.get_next_token()
 
     def process_compound_command(self):
         if self.compare_token_value(TokenValueRegex.BEGIN):
@@ -210,10 +197,7 @@ class SyntacticAnalyzer():
                 or self.compare_token_value(TokenValueRegex.IF) \
                 or self.compare_token_value(TokenValueRegex.WHILE) \
                 or self.compare_token_value(TokenValueRegex.BEGIN):
-            self.get_next_token()
             self.process_list_of_commands()
-        else:
-            self.get_next_token()
 
     def process_list_of_commands(self):
         self.process_command()
@@ -224,8 +208,6 @@ class SyntacticAnalyzer():
             self.get_next_token()
             self.process_command()
             self.process_list_of_commands_2()
-        else:
-            self.get_next_token()
 
     def process_command(self):
         if self.compare_token_value(TokenValueRegex.IF):
@@ -255,19 +237,16 @@ class SyntacticAnalyzer():
             self.process_compound_command()
 
         if self.compare_token_type(TokenType.Identifier):
+            self.get_next_token()
             if self.compare_token_value(TokenValueRegex.ASSIGNMENT):
                 self.get_next_token()
                 self.process_expression()
             elif self.compare_token_value(TokenValueRegex.OPEN_PARENTHESIS):
                 self.process_procedure_activation()
-            else:
-                self.get_next_token()
 
     def process_else(self):
         if self.compare_token_value(TokenValueRegex.ELSE):
             self.process_command()
-        else:
-            self.get_next_token()
 
     def process_variable(self):
         pass
@@ -295,17 +274,35 @@ class SyntacticAnalyzer():
         if self.compare_token_value(TokenValueRegex.COMMA):
             self.process_expression()
             self.process_list_of_expressions_2()
-        else:
-            self.get_next_token()
 
     def process_expression(self):
-        pass
+        self.process_simple_expression()
+
+        if self.compare_token_value(TokenValueRegex.OP_RELATIONAL):
+            self.get_next_token()
+            self.process_simple_expression()
 
     def process_simple_expression(self):
-        pass
+        if self.compare_token_value(TokenValueRegex.SINAL):
+            self.process_sinal()
+        self.process_term()
+        self.process_simple_expression_2()
+
+    def process_simple_expression_2(self):
+        if self.compare_token_value(TokenValueRegex.OP_ADD):
+            self.process_op_aditivo()
+            self.process_term()
+            self.process_simple_expression_2()
 
     def process_term(self):
-        pass
+        self.process_fator()
+        self.process_term_2()
+
+    def process_term_2(self):
+        if self.compare_token_value(TokenValueRegex.OP_MULTI):
+            self.process_op_multiplicativo()
+            self.process_fator()
+            self.process_term_2()
 
     def process_fator(self):
         if self.compare_token_type(TokenType.Identifier):
@@ -317,7 +314,7 @@ class SyntacticAnalyzer():
                 if self.compare_token(TokenType.Delimiter, TokenValueRegex.CLOSE_PARENTHESIS):
                     self.get_next_token()
                 else:
-                    raise Exception()
+                    raise Exception('Esperado fechamento de parentesis')
 
         elif self.compare_token_type(TokenType.Integer):
             self.get_next_token()
@@ -335,7 +332,7 @@ class SyntacticAnalyzer():
             if self.compare_token(TokenType.Delimiter, TokenValueRegex.CLOSE_PARENTHESIS):
                 self.get_next_token()
             else:
-                raise Exception()
+                raise Exception('Esperado fechamento de parentesis')
 
         elif self.compare_token_value(TokenValueRegex.NOT):
             self.get_next_token()
@@ -390,7 +387,7 @@ class SyntacticAnalyzer():
                         self.get_next_token()
                         self.process_variables_declaration()
                         self.process_sub_programs_declararion()
-                        # self.process_compound_command()
+                        self.process_compound_command()
 
                         if not self.compare_token_value(TokenValueRegex.POINT):
                             raise Exception(
