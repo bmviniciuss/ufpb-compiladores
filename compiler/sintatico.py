@@ -16,8 +16,11 @@ class SyntacticAnalyzer():
         self.stack = []
 
     def get_next_token(self):
-        self.current_token = self.stack.pop()
-        logger.debug(self.current_token)
+        if len(self.stack) > 0:
+            self.current_token = self.stack.pop()
+            logger.debug(self.current_token)
+        else:
+            raise Exception("EOF")
 
     def compare_token(self, token_type, token_regex):
         return self.compare_token_type(token_type) \
