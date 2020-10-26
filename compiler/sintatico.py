@@ -1,3 +1,4 @@
+from logging import error
 from compiler.utils import get_symbol_table
 from compiler.types import TokenType, TokenValueRegex
 import logging
@@ -29,50 +30,79 @@ class SyntacticAnalyzer():
         return self.current_token['type'] == token_type
 
     def process_variables_declaration(self):
-        if self.compare_token(TokenType.Keyword, TokenValueRegex.VAR):
+        if self.compare_token_value(TokenValueRegex.VAR):
             self.get_next_token()
             self.process_variables_list_declaration()
         else:
             self.get_next_token()
 
-    def internal_process_variables_list(self):
-        if self.compare_token(TokenType.Delimiter, TokenValueRegex.COLON):
+    def process_variables_list_declaration(self):
+        self.process_identifiers_list()
+
+        if self.compare_token_value(TokenValueRegex.COLON):
             self.get_next_token()
             self.process_type()
 
-            if self.compare_token(TokenType.Delimiter, TokenValueRegex.SEMICOLON):
+            if self.compare_token_value(TokenValueRegex.SEMICOLON):
                 self.get_next_token()
                 self.process_variables_list_declaration_2()
             else:
-                # return False
-                raise Exception()
-
+                raise Exception(
+                    self.format_error_message(
+                        "Error: delimiter ';' was expected."
+                    ))
         else:
-            # return False
-            raise Exception()
-
-    def process_variables_list_declaration(self):
-        self.process_identifiers_list()
-        self.internal_process_variables_list()
+            raise Exception(
+                self.format_error_message(
+                    "Error: delimiter ':' was expected."
+                ))
 
     def process_variables_list_declaration_2(self):
         if self.compare_token_type(TokenType.Identifier):
             self.process_identifiers_list()
-            self.internal_process_variables_list()
+
+            if self.compare_token_value(TokenValueRegex.COLON):
+                self.get_next_token()
+                self.process_type()
+
+                if self.compare_token_value(TokenValueRegex.SEMICOLON):
+                    self.get_next_token()
+                    self.process_variables_list_declaration_2()
+                else:
+                    raise Exception(
+                        self.format_error_message(
+                            "Error: delimiter ';' was expected."
+                        ))
+
+            else:
+                raise Exception(
+                    self.format_error_message(
+                        "Error: delimiter ':' was expected."
+                    ))
+
         else:
             self.get_next_token()
 
     def process_identifiers_list(self):
         if self.compare_token_type(TokenType.Identifier):
             self.get_next_token()
-            self.process_identifiers_list()
-        elif self.compare_token(TokenType.Delimiter, TokenValueRegex.COMMA):
+            self.process_identifiers_list_2()
+        else:
+            raise Exception(self.format_error_message(
+                'Erro: o programa espera um identificador válido.'))
+
+    def process_identifiers_list_2(self):
+        if self.compare_token_value(TokenValueRegex.COMMA):
             self.get_next_token()
             if self.compare_token_type(TokenType.Identifier):
                 self.get_next_token()
-                self.process_identifiers_list()
+                self.process_identifiers_list_2()
             else:
-                raise Exception()
+                raise Exception(self.format_error_message(
+                    'Erro: o programa espera um identificador válido.'))
+
+        else:
+            self.get_next_token()
 
     def process_sub_programs_declararion(self):
         if self.compare_token(TokenType.Keyword, TokenValueRegex.PROCEDURE):
