@@ -23,7 +23,7 @@ class TokenValueRegex(str, Enum):
     SEMICOLON = r'^(;)$'
     POINT = r'^(.)$'
     COMMA = r'^(,)$'
-    IDENTIFIER_TYPE = r'^(integer|real|boolean|INTEGER|REAL|BOOLEAN)$'
+    VAR_TYPE = r'^(integer|real|boolean|INTEGER|REAL|BOOLEAN)$'
     BEGIN = r'^(begin|BEGIN)$'
     END = r'^(end|END)$'
     OPEN_PARENTHESIS = r'^(\()$'

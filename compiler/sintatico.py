@@ -41,7 +41,6 @@ class SyntacticAnalyzer():
 
     def process_variables_list_declaration(self):
         self.process_identifiers_list()
-
         if self.compare_token_value(TokenValueRegex.COLON):
             self.get_next_token()
             self.process_type()
@@ -104,14 +103,11 @@ class SyntacticAnalyzer():
                 raise Exception(self.format_error_message(
                     'Erro: o programa espera um identificador válido.'))
 
-        else:
-            self.get_next_token()
-
     def process_sub_programs_declararion(self):
-        if self.compare_token(TokenType.Keyword, TokenValueRegex.PROCEDURE):
+        if self.compare_token_value(TokenValueRegex.PROCEDURE):
             self.process_sub_program_declaration()
 
-            if self.compare_token(TokenType.Delimiter, TokenValueRegex.SEMICOLON):
+            if self.compare_token_value(TokenValueRegex.SEMICOLON):
                 self.get_next_token()
                 self.process_sub_programs_declararion_2()
 
@@ -373,11 +369,11 @@ class SyntacticAnalyzer():
             raise Exception()
 
     def process_type(self):
-        if not self.compare_token(TokenType.Keyword, TokenValueRegex.IDENTIFIER_TYPE):
+        if self.compare_token_value(TokenValueRegex.VAR_TYPE):
+            self.get_next_token()
+        else:
             raise Exception(self.format_error_message(
                 'Tipo de variável não permitido.'))
-        else:
-            self.get_next_token()
 
     def process(self, token_table):
         self.stack = list(reversed(token_table))
