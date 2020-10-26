@@ -28,113 +28,6 @@ class SyntacticAnalyzer():
     def compare_token_type(self, token_type):
         return self.current_token['type'] == token_type
 
-    def process_op_multiplicativo(self):
-        if self.compare_token_value(TokenValueRegex.OP_MULTI):
-            self.get_next_token()
-        else:
-            raise Exception()
-
-    def process_op_aditivo(self):
-        if self.compare_token_value(TokenValueRegex.OP_ADD):
-            self.get_next_token()
-        else:
-            raise Exception()
-
-    def process_op_relacional(self):
-        if self.compare_token_value(TokenValueRegex.OP_RELATIONAL):
-            self.get_next_token()
-        else:
-            raise Exception()
-
-    def process_sinal(self):
-        if self.compare_token_value(TokenValueRegex.SINAL):
-            self.get_next_token()
-        else:
-            raise Exception()
-
-    def process_fator(self):
-        if self.compare_token_type(TokenType.Identifier):
-            self.get_next_token()
-            if self.compare_token(TokenType.Delimiter, TokenValueRegex.OPEN_PARENTHESIS):
-                self.get_next_token()
-                self.process_expression_list()
-
-                if self.compare_token(TokenType.Delimiter, TokenValueRegex.CLOSE_PARENTHESIS):
-                    self.get_next_token()
-                else:
-                    raise Exception()
-
-        elif self.compare_token_type(TokenType.Integer):
-            self.get_next_token()
-
-        elif self.compare_token_type(TokenType.RealNumber):
-            self.get_next_token()
-
-        elif self.compare_token_value(TokenValueRegex.BOOLEAN):
-            self.get_next_token()
-
-        elif self.compare_token(TokenType.Delimiter, TokenValueRegex.OPEN_PARENTHESIS):
-            self.get_next_token()
-
-            self.process_expression()
-            if self.compare_token(TokenType.Delimiter, TokenValueRegex.CLOSE_PARENTHESIS):
-                self.get_next_token()
-            else:
-                raise Exception()
-
-        elif self.compare_token_value(TokenValueRegex.NOT):
-            self.get_next_token()
-            self.process_fator()
-
-        else:
-            raise Exception()
-
-    def process_expression(self):
-        pass
-
-    def process_expression_list(self):
-        pass
-
-    def process_variable(self):
-        pass
-
-    def process_command(self):
-        pass
-
-    def process_params_list(self):
-        pass
-
-    def process_arguments(self):
-        if self.compare_token(TokenType.Delimiter, TokenValueRegex.OPEN_PARENTHESIS):
-            self.get_next_token()
-            self.process_params_list()
-
-            if self.compare_token(TokenType.Delimiter, TokenValueRegex.CLOSE_PARENTHESIS):
-                self.get_next_token()
-            else:
-                raise Exception()
-        else:
-            self.get_next_token()
-
-    def optional_commands(self):
-        pass
-
-    def process_compound_command(self):
-        if self.compare_token(TokenType.Keyword, TokenValueRegex.BEGIN):
-            self.get_next_token()
-            self.optional_commands()
-
-            if self.compare_token(TokenType.Keyword, TokenValueRegex.END):
-                self.get_next_token()
-            else:
-                raise Exception()
-
-        else:
-            raise Exception()
-
-    def process_sub_programs_declararion(self):
-        pass
-
     def process_variables_declaration(self):
         if self.compare_token(TokenType.Identifier, TokenValueRegex.VAR):
             self.get_next_token()
@@ -181,6 +74,113 @@ class SyntacticAnalyzer():
             else:
                 raise Exception()
 
+        else:
+            raise Exception()
+
+    def process_sub_programs_declararion(self):
+        pass
+
+    def process_arguments(self):
+        if self.compare_token(TokenType.Delimiter, TokenValueRegex.OPEN_PARENTHESIS):
+            self.get_next_token()
+            self.process_params_list()
+
+            if self.compare_token(TokenType.Delimiter, TokenValueRegex.CLOSE_PARENTHESIS):
+                self.get_next_token()
+            else:
+                raise Exception()
+        else:
+            self.get_next_token()
+
+    def process_params_list(self):
+        pass
+
+    def process_compound_command(self):
+        if self.compare_token(TokenType.Keyword, TokenValueRegex.BEGIN):
+            self.get_next_token()
+            self.optional_commands()
+
+            if self.compare_token(TokenType.Keyword, TokenValueRegex.END):
+                self.get_next_token()
+            else:
+                raise Exception()
+
+        else:
+            raise Exception()
+
+    def optional_commands(self):
+        pass
+
+    def process_command(self):
+        pass
+
+    def process_variable(self):
+        pass
+
+    def process_expression_list(self):
+        pass
+
+    def process_expression(self):
+        pass
+
+    def process_fator(self):
+        if self.compare_token_type(TokenType.Identifier):
+            self.get_next_token()
+            if self.compare_token(TokenType.Delimiter, TokenValueRegex.OPEN_PARENTHESIS):
+                self.get_next_token()
+                self.process_expression_list()
+
+                if self.compare_token(TokenType.Delimiter, TokenValueRegex.CLOSE_PARENTHESIS):
+                    self.get_next_token()
+                else:
+                    raise Exception()
+
+        elif self.compare_token_type(TokenType.Integer):
+            self.get_next_token()
+
+        elif self.compare_token_type(TokenType.RealNumber):
+            self.get_next_token()
+
+        elif self.compare_token_value(TokenValueRegex.BOOLEAN):
+            self.get_next_token()
+
+        elif self.compare_token(TokenType.Delimiter, TokenValueRegex.OPEN_PARENTHESIS):
+            self.get_next_token()
+
+            self.process_expression()
+            if self.compare_token(TokenType.Delimiter, TokenValueRegex.CLOSE_PARENTHESIS):
+                self.get_next_token()
+            else:
+                raise Exception()
+
+        elif self.compare_token_value(TokenValueRegex.NOT):
+            self.get_next_token()
+            self.process_fator()
+
+        else:
+            raise Exception()
+
+    def process_sinal(self):
+        if self.compare_token_value(TokenValueRegex.SINAL):
+            self.get_next_token()
+        else:
+            raise Exception()
+
+    def process_op_relacional(self):
+        if self.compare_token_value(TokenValueRegex.OP_RELATIONAL):
+            self.get_next_token()
+        else:
+            raise Exception()
+
+    def process_op_aditivo(self):
+        if self.compare_token_value(TokenValueRegex.OP_ADD):
+            self.get_next_token()
+        else:
+            raise Exception()
+
+    def process_op_multiplicativo(self):
+        if self.compare_token_value(TokenValueRegex.OP_MULTI):
+            self.get_next_token()
         else:
             raise Exception()
 
