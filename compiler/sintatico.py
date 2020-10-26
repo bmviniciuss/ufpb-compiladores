@@ -285,7 +285,8 @@ class SyntacticAnalyzer():
 
     def process_type(self):
         if not self.compare_token(TokenType.Keyword, TokenValueRegex.IDENTIFIER_TYPE):
-            raise Exception()
+            raise Exception(self.format_error_message(
+                'Tipo de variável não permitido.'))
         else:
             self.get_next_token()
 
