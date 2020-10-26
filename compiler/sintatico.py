@@ -210,10 +210,26 @@ class SyntacticAnalyzer():
                 'Comando composto deve iniciar com begin'))
 
     def optional_commands(self):
-        pass
+        if self.compare_token_type(TokenType.Identifier) \
+                or self.compare_token_value(TokenValueRegex.IF) \
+                or self.compare_token_value(TokenValueRegex.WHILE) \
+                or self.compare_token_value(TokenValueRegex.BEGIN):
+            self.get_next_token()
+            self.process_list_of_commands()
+        else:
+            self.get_next_token()
 
     def process_list_of_commands(self):
-        pass
+        self.process_command()
+        self.process_list_of_commands_2()
+
+    def process_list_of_commands_2(self):
+        if self.compare_token_value(TokenValueRegex.SEMICOLON):
+            self.get_next_token()
+            self.process_command()
+            self.process_list_of_commands_2()
+        else:
+            self.get_next_token()
 
     def process_command(self):
         pass

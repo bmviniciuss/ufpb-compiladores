@@ -34,3 +34,5 @@ class TokenValueRegex(str, Enum):
     SINAL = r'^(+|-)$'
     BOOLEAN = r'^(true|TRUE|false|FALSE)$'
     NOT = r'^(not|NOT)$'
+    IF = r'^(if|IF)$'
+    WHILE = r'^(while|WHILE)$'
