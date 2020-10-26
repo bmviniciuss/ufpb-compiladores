@@ -247,7 +247,6 @@ class SyntacticAnalyzer():
 
     def process(self, token_table):
         self.stack = list(reversed(token_table))
-        data = {}
 
         while len(self.stack) > 0:
             self.get_next_token()
@@ -263,17 +262,37 @@ class SyntacticAnalyzer():
                         self.process_sub_programs_declararion()
                         # self.process_compound_command()
 
-                        if not self.compare_token(TokenType.Delimiter, TokenValueRegex.POINT):
-                            raise Exception()
+                        if not self.compare_token_value(TokenValueRegex.POINT):
+                            raise Exception(
+                                self.format_error_message(
+                                    "Error: final delimiter '.' was expected."
+                                )
+                            )
 
                     else:
-                        raise Exception()
+                        raise Exception(
+                            self.format_error_message(
+                                "Error: delimiter ';' was expected."
+                            )
+                        )
 
                 else:
-                    raise Exception()
+                    raise Exception(
+                        self.format_error_message(
+                            "Error: An valid identifier was expected."
+                        )
+                    )
 
             else:
-                raise Exception()
+                raise Exception(self.format_error_message(
+                    "Error: 'program' identifier was not found."
+                ))
+
+    def format_error_message(self, message):
+        if self.current_token:
+            return message + " On line: " + str(self.current_token['line'])
+        else:
+            return message
 
 
 def runSyntacticAnalysis(path, relative_path=False):
