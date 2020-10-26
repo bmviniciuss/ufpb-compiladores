@@ -155,14 +155,17 @@ class SyntacticAnalyzer():
             raise Exception('Subprograma deve iniciar com "procedure"')
 
     def process_arguments(self):
-        if self.compare_token(TokenType.Delimiter, TokenValueRegex.OPEN_PARENTHESIS):
+        if self.compare_token_value(TokenValueRegex.OPEN_PARENTHESIS):
             self.get_next_token()
             self.process_params_list()
 
-            if self.compare_token(TokenType.Delimiter, TokenValueRegex.CLOSE_PARENTHESIS):
+            if self.compare_token_value(TokenValueRegex.CLOSE_PARENTHESIS):
                 self.get_next_token()
             else:
-                raise Exception()
+                raise Exception(
+                    self.format_error_message(
+                        '")" esperado apos list da parametros.')
+                )
         else:
             self.get_next_token()
 
