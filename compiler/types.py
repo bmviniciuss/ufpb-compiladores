@@ -17,6 +17,7 @@ class TokenType(str, Enum):
 
 class TokenValueRegex(str, Enum):
     PROGRAM = r'^(program|PROGRAM)$'
+    PROCEDURE = r'^(procedure)$'
     VAR = r'^(var|VAR)$'
     COLON = r'^(:)$'
     SEMICOLON = r'^(;)$'

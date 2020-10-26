@@ -74,11 +74,48 @@ class SyntacticAnalyzer():
             else:
                 raise Exception()
 
-        else:
-            raise Exception()
-
     def process_sub_programs_declararion(self):
-        pass
+        if self.compare_token(TokenType.Keyword, TokenValueRegex.PROCEDURE):
+            self.process_sub_program_declaration()
+
+            if self.compare_token(TokenType.Delimiter, TokenValueRegex.SEMICOLON):
+                self.get_next_token()
+                self.process_sub_programs_declararion_2()
+
+            else:
+                raise Exception('Delimitador ; esperado')
+
+    def process_sub_programs_declararion_2(self):
+        if self.compare_token(TokenType.Keyword, TokenValueRegex.PROCEDURE):
+            self.process_sub_program_declaration()
+
+            if self.compare_token(TokenType.Delimiter, TokenValueRegex.SEMICOLON):
+                self.get_next_token()
+                self.process_sub_programs_declararion_2()
+
+            else:
+                raise Exception('Delimitador ; esperado')
+
+    def process_sub_program_declaration(self):
+        if self.compare_token(TokenType.Keyword, TokenValueRegex.PROCEDURE):
+            self.get_next_token()
+            if self.compare_token_type(TokenType.Identifier):
+                self.get_next_token()
+                self.process_arguments()
+
+                if self.compare_token(TokenType.Delimiter, TokenValueRegex.SEMICOLON):
+                    self.get_next_token()
+                    self.process_variables_declaration()
+                    self.process_sub_programs_declararion()
+                    self.process_compound_command()
+                else:
+                    raise Exception(
+                        '";"  esperado antes de declaracao de variaveis de um subprograma')
+            else:
+                raise Exception(
+                    'Um subprograma requer um identificador valido')
+        else:
+            raise Exception('Subprograma deve iniciar com "procedure"')
 
     def process_arguments(self):
         if self.compare_token(TokenType.Delimiter, TokenValueRegex.OPEN_PARENTHESIS):
@@ -93,7 +130,25 @@ class SyntacticAnalyzer():
             self.get_next_token()
 
     def process_params_list(self):
-        pass
+        self.process_identifiers_list()
+        if self.compare_token(TokenType.Delimiter, TokenValueRegex.COLON):
+            self.get_next_token()
+            self.process_type()
+            self.process_params_list_2()
+        else:
+            raise Exception('Esperado ":" apos lista de identificadoers')
+
+    def process_params_list_2(self):
+        if self.compare_token(TokenType.Delimiter, TokenValueRegex.SEMICOLON):
+            self.get_next_token()
+            self.process_identifiers_list()
+
+            if self.compare_token(TokenType.Delimiter, TokenValueRegex.COLON):
+                self.get_next_token()
+                self.process_type()
+                self.process_params_list_2()
+            else:
+                raise Exception('Esperado  ":" apos lista de identificadoers')
 
     def process_compound_command(self):
         if self.compare_token(TokenType.Keyword, TokenValueRegex.BEGIN):
@@ -103,10 +158,10 @@ class SyntacticAnalyzer():
             if self.compare_token(TokenType.Keyword, TokenValueRegex.END):
                 self.get_next_token()
             else:
-                raise Exception()
+                raise Exception('Comando composto deve acabar com end')
 
         else:
-            raise Exception()
+            raise Exception('Comando composto deve iniciar com begin')
 
     def optional_commands(self):
         pass
@@ -196,7 +251,6 @@ class SyntacticAnalyzer():
 
         while len(self.stack) > 0:
             self.get_next_token()
-            logger.debug(self.current_token)
             if self.compare_token(TokenType.Keyword, TokenValueRegex.PROGRAM):
                 self.get_next_token()
 
