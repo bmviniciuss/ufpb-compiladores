@@ -232,16 +232,64 @@ class SyntacticAnalyzer():
             self.get_next_token()
 
     def process_command(self):
-        pass
+        if self.compare_token_value(TokenValueRegex.IF):
+            self.get_next_token()
+            self.process_expression()
+
+            if self.compare_token_value(TokenValueRegex.THEN):
+                self.get_next_token()
+                self.process_command()
+                self.process_else()
+            else:
+                raise Exception(self.format_error_message(
+                    '"then" esperado para o comando if.'))
+
+        if self.compare_token_value(TokenValueRegex.WHILE):
+            self.get_next_token()
+            self.process_expression()
+
+            if self.compare_token_value(TokenValueRegex.DO):
+                self.process_command()
+                pass
+            else:
+                raise Exception(self.format_error_message(
+                    '"do" esperado para o comando while.'))
+
+        if self.compare_token_value(TokenValueRegex.BEGIN):
+            self.process_compound_command()
+
+        if self.compare_token_type(TokenType.Identifier):
+            if self.compare_token_value(TokenValueRegex.ASSIGNMENT):
+                self.get_next_token()
+                self.process_expression()
+            elif self.compare_token_value(TokenValueRegex.OPEN_PARENTHESIS):
+                self.process_procedure_activation()
+            else:
+                self.get_next_token()
 
     def process_else(self):
-        pass
+        if self.compare_token_value(TokenValueRegex.ELSE):
+            self.process_command()
+        else:
+            self.get_next_token()
 
     def process_variable(self):
         pass
 
     def process_procedure_activation(self):
-        pass
+        if self.compare_token_value(TokenValueRegex.OPEN_PARENTHESIS):
+            self.get_next_token()
+            self.process_list_of_expressions()
+
+            if self.compare_token_value(TokenValueRegex.CLOSE_PARENTHESIS):
+                self.get_next_token()
+            else:
+                raise Exception(self.format_error_message(
+                    '")" esperado para ativação de comando.'))
+
+        else:
+            raise Exception(self.format_error_message(
+                '"(" esperado para ativação de comando.'))
 
     def process_list_of_expressions(self):
         pass
