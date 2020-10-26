@@ -67,7 +67,7 @@ class SyntacticAnalyzer():
         elif self.compare_token_type(TokenType.Integer):
             self.get_next_token()
 
-        elif self.compare_token_type(TokenType.Real):
+        elif self.compare_token_type(TokenType.RealNumber):
             self.get_next_token()
 
         elif self.compare_token_value(TokenValueRegex.BOOLEAN):
@@ -120,7 +120,7 @@ class SyntacticAnalyzer():
         pass
 
     def process_compound_command(self):
-        if self.compare_token(TokenType.Keyword, TokenValueRegex.TokenValueRegex):
+        if self.compare_token(TokenType.Keyword, TokenValueRegex.BEGIN):
             self.get_next_token()
             self.optional_commands()
 
