@@ -29,7 +29,7 @@ class SyntacticAnalyzer():
         return self.current_token['type'] == token_type
 
     def process_variables_declaration(self):
-        if self.compare_token(TokenType.Identifier, TokenValueRegex.VAR):
+        if self.compare_token(TokenType.Keyword, TokenValueRegex.VAR):
             self.get_next_token()
             self.process_variables_list_declaration()
         else:
@@ -207,7 +207,7 @@ class SyntacticAnalyzer():
                         self.get_next_token()
                         self.process_variables_declaration()
                         self.process_sub_programs_declararion()
-                        self.process_compound_command()
+                        # self.process_compound_command()
 
                         if not self.compare_token(TokenType.Delimiter, TokenValueRegex.POINT):
                             raise Exception()
@@ -234,5 +234,5 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
     logger.debug("Sintatico")
 
-    res = runSyntacticAnalysis('lexico_Test4.json')
+    res = runSyntacticAnalysis('lexico_Test3.json')
     logger.debug(json.dumps(res, indent=2))
