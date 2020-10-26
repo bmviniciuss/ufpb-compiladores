@@ -292,7 +292,15 @@ class SyntacticAnalyzer():
                 '"(" esperado para ativação de comando.'))
 
     def process_list_of_expressions(self):
-        pass
+        self.process_expression()
+        self.process_list_of_expressions_2()
+
+    def process_list_of_expressions_2(self):
+        if self.compare_token_value(TokenValueRegex.COMMA):
+            self.process_expression()
+            self.process_list_of_expressions_2()
+        else:
+            self.get_next_token()
 
     def process_expression(self):
         pass
