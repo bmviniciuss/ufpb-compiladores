@@ -195,17 +195,19 @@ class SyntacticAnalyzer():
             self.get_next_token()
 
     def process_compound_command(self):
-        if self.compare_token(TokenType.Keyword, TokenValueRegex.BEGIN):
+        if self.compare_token_value(TokenValueRegex.BEGIN):
             self.get_next_token()
             self.optional_commands()
 
-            if self.compare_token(TokenType.Keyword, TokenValueRegex.END):
+            if self.compare_token_value(TokenValueRegex.END):
                 self.get_next_token()
             else:
-                raise Exception('Comando composto deve acabar com end')
+                raise Exception(self.format_error_message(
+                    'Comando composto deve acabar com end'))
 
         else:
-            raise Exception('Comando composto deve iniciar com begin')
+            raise Exception(self.format_error_message(
+                'Comando composto deve iniciar com begin'))
 
     def optional_commands(self):
         pass
