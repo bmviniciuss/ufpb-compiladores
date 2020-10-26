@@ -196,7 +196,6 @@ class SyntacticAnalyzer():
 
         while len(self.stack) > 0:
             self.get_next_token()
-            logger.debug(self.current_token)
             if self.compare_token(TokenType.Keyword, TokenValueRegex.PROGRAM):
                 self.get_next_token()
 
