@@ -212,16 +212,31 @@ class SyntacticAnalyzer():
     def optional_commands(self):
         pass
 
+    def process_list_of_commands(self):
+        pass
+
     def process_command(self):
+        pass
+
+    def process_else(self):
         pass
 
     def process_variable(self):
         pass
 
-    def process_expression_list(self):
+    def process_procedure_activation(self):
+        pass
+
+    def process_list_of_expressions(self):
         pass
 
     def process_expression(self):
+        pass
+
+    def process_simple_expression(self):
+        pass
+
+    def process_term(self):
         pass
 
     def process_fator(self):
@@ -229,7 +244,7 @@ class SyntacticAnalyzer():
             self.get_next_token()
             if self.compare_token(TokenType.Delimiter, TokenValueRegex.OPEN_PARENTHESIS):
                 self.get_next_token()
-                self.process_expression_list()
+                self.process_list_of_expressions()
 
                 if self.compare_token(TokenType.Delimiter, TokenValueRegex.CLOSE_PARENTHESIS):
                     self.get_next_token()
