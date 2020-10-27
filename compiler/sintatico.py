@@ -1,6 +1,7 @@
 from logging import error
 from compiler.utils import get_symbol_table
 from compiler.types import TokenType, TokenValueRegex
+from compiler.lexico import TokenReader
 import logging
 import json
 import re
@@ -181,7 +182,6 @@ class SyntacticAnalyzer():
         if self.compare_token_value(TokenValueRegex.BEGIN):
             self.get_next_token()
             self.optional_commands()
-            self.process_else()
 
             if self.compare_token_value(TokenValueRegex.END):
                 self.get_next_token()
