@@ -181,6 +181,7 @@ class SyntacticAnalyzer():
         if self.compare_token_value(TokenValueRegex.BEGIN):
             self.get_next_token()
             self.optional_commands()
+            self.process_else()
 
             if self.compare_token_value(TokenValueRegex.END):
                 self.get_next_token()
@@ -243,9 +244,11 @@ class SyntacticAnalyzer():
                 self.process_expression()
             elif self.compare_token_value(TokenValueRegex.OPEN_PARENTHESIS):
                 self.process_procedure_activation()
+            # TODO: add except
 
     def process_else(self):
         if self.compare_token_value(TokenValueRegex.ELSE):
+            self.get_next_token()
             self.process_command()
 
     def process_variable(self):
@@ -305,18 +308,8 @@ class SyntacticAnalyzer():
             self.process_term_2()
 
     def process_fator(self):
-        if self.compare_token_type(TokenType.Identifier):
-            self.get_next_token()
-            if self.compare_token(TokenType.Delimiter, TokenValueRegex.OPEN_PARENTHESIS):
-                self.get_next_token()
-                self.process_list_of_expressions()
 
-                if self.compare_token(TokenType.Delimiter, TokenValueRegex.CLOSE_PARENTHESIS):
-                    self.get_next_token()
-                else:
-                    raise Exception('Esperado fechamento de parentesis')
-
-        elif self.compare_token_type(TokenType.Integer):
+        if self.compare_token_type(TokenType.Integer):
             self.get_next_token()
 
         elif self.compare_token_type(TokenType.RealNumber):
@@ -324,6 +317,10 @@ class SyntacticAnalyzer():
 
         elif self.compare_token_value(TokenValueRegex.BOOLEAN):
             self.get_next_token()
+
+        elif self.compare_token_value(TokenValueRegex.NOT):
+            self.get_next_token()
+            self.process_fator()
 
         elif self.compare_token(TokenType.Delimiter, TokenValueRegex.OPEN_PARENTHESIS):
             self.get_next_token()
@@ -334,9 +331,16 @@ class SyntacticAnalyzer():
             else:
                 raise Exception('Esperado fechamento de parentesis')
 
-        elif self.compare_token_value(TokenValueRegex.NOT):
+        elif self.compare_token_type(TokenType.Identifier):
             self.get_next_token()
-            self.process_fator()
+            if self.compare_token(TokenType.Delimiter, TokenValueRegex.OPEN_PARENTHESIS):
+                self.get_next_token()
+                self.process_list_of_expressions()
+
+                if self.compare_token(TokenType.Delimiter, TokenValueRegex.CLOSE_PARENTHESIS):
+                    self.get_next_token()
+                else:
+                    raise Exception('Esperado fechamento de parentesis')
 
         else:
             raise Exception()
