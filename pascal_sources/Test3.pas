@@ -8,9 +8,9 @@ var
 begin
    NUMERO := - 3 * 5 + 7 - 9;
    if (NUMERO >= 20) and (NUMERO <=90) then
-      NUMERO = 11 * 1;
-      NUMERO = 12 * 2;
-      NUMERO = 13;
+      NUMERO := 11 * 1;
+      NUMERO := 12 * 2;
+      NUMERO := 13;
    else NUMERO := 10 / 3  
 end.
 
