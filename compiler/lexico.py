@@ -23,7 +23,7 @@ class TokenType(str, Enum):
     Unknown = "Unknown"
 
 
-Whitespace = [' ', '\t', '\n']
+Whitespace = [' ', '\t', '\n', '']
 Keyword = ['program', 'var', 'integer', 'real', 'boolean', 'procedure',
            'begin', 'end', 'if', 'then', 'else', 'while', 'do', 'not', 'for', 'to']
 Delimiter = [';', '.', ':', '(', ')', ',']
@@ -98,6 +98,8 @@ class TokenReader():
             else:
                 tmp_token += char
 
+        self.current_token = tmp_token
+
     def take_pair(self, valid_pairs):
         """Takes a pair of chars, if no matching pairs are found after peeking ahead, puts leading char
         back on stack and proceeds as normal
@@ -129,7 +131,7 @@ class TokenReader():
         self.save_token(self.current_token)
 
     def process_word(self):
-        self.take_until(Delimiter + Whitespace + Operator)
+        self.take_until(Delimiter + Whitespace + Operator + ['.'])
 
         if not re.match(ValidIdentifierPattern, self.current_token):
             raise ParseError(
@@ -188,6 +190,11 @@ class TokenReader():
 def build_symbol_table(path, relative_path=False):
     code = strip_comments(get_src_code(path, relative_path))
     return TokenReader().process(code)
+
+
+def get_sym_table(src_code):
+    code = strip_comments(src_code)
+    return TokenReader().process(code)['symbol_table']
 
 
 if __name__ == '__main__':
