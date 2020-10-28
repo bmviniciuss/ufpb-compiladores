@@ -52,3 +52,17 @@ def save_json(filename, data, filename_prefix=""):
     logger.debug("Saving JSON output...")
     with open(file_path, 'w') as f:
         json.dump(data, f, indent=2)
+
+
+def head_type(buffer, t):
+    if not len(buffer) > 0:
+        return False
+
+    return buffer[0]['type'] == t
+
+
+def head_value(buffer, pattern):
+    if not len(buffer) > 0:
+        return False
+
+    return re.match(pattern, buffer[0]['token'])
