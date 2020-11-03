@@ -7,7 +7,12 @@ def compose_one(parser_a, parser_b):
                       parser_b.__name__)
 
     def parser_c(buffer):
-        res_1 = parser_a(buffer)
+        # Handle unit
+        arg_1 = buffer
+        if type(buffer) == tuple:
+            arg_1 = buffer[0]
+
+        res_1 = parser_a(arg_1)
         if type(res_1) == str:
             return res_1
 

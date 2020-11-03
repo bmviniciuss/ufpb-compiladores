@@ -17,9 +17,6 @@ logger.propagate = False
 coloredlogs.install(level=logging.DEBUG, logger=logger)
 
 
-# Utils
-
-
 # Gramatica
 
 # Terminais
