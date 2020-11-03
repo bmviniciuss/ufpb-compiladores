@@ -55,14 +55,20 @@ def save_json(filename, data, filename_prefix=""):
 
 
 def head_type(buffer, t):
-    if not len(buffer) > 0:
-        return False
+    try:
+        if not len(buffer) > 0:
+            return False
 
-    return buffer[0]['type'] == t
+        return buffer[0]['type'] == t
+    except TypeError:
+        return 'Invalid token'
 
 
 def head_value(buffer, pattern):
-    if not len(buffer) > 0:
-        return False
+    try:
+        if not len(buffer) > 0:
+            return False
 
-    return re.match(pattern, buffer[0]['token'])
+        return re.match(pattern, buffer[0]['token'])
+    except TypeError:
+        return 'Invalid token'

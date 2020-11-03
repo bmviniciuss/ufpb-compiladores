@@ -1,32 +1,49 @@
 from functools import reduce
 
 
-# Monoidical compose
-def compose_one(parser_a, parser_b):
+def empty_left(parser_a, parser_b, buffer):
+    try:
+        a = parser_a(buffer)
+        assert type(a) == Unit
+        b = parser_b(buffer)
+        assert type(b) == Unit
+        return b.unwrap()
+    except AssertionError:
+        return 'EOF'
+    except IndexError:
+        return 'EOF'
+
+
+def empty_inner(parser, buffer):
+    try:
+        b = parser(buffer)
+        assert type(b) == Unit
+        return b.unwrap()
+    except AssertionError:
+        return 'EOF'
+    except IndexError:
+        return 'EOF'
+
+
+def sequence_one(parser_a, parser_b):
     name = '%s %s' % (parser_a.__name__,
                       parser_b.__name__)
 
     def parser_c(buffer):
-        # Handle unit
-        arg_1 = buffer
-        if type(buffer) == tuple:
-            arg_1 = buffer[0]
+        # Empty input is only valid if the chain is empty
+        if buffer == []:
+            return empty_left(parser_a, parser_b, buffer)
 
-        res_1 = parser_a(arg_1)
-        if type(res_1) == str:
-            return res_1
+        a = parser_a(buffer)
 
-        # Handle unit
-        if type(res_1) == tuple:
-            res_1 = res_1[0]
-        else:
-            res_1 = res_1[1:]
+        if type(a) == str:
+            return a
 
-        res_2 = parser_b(res_1)
-        if type(res_2) == str:
-            return res_2
+        # Handle empty inner left
+        if a == []:
+            return empty_inner(parser_b, a)
 
-        return res_2
+        return parser_b(a)
 
     # Keep names for logging
     parser_c.__name__ = name
@@ -34,24 +51,33 @@ def compose_one(parser_a, parser_b):
     return parser_c
 
 
-def compose(*parsers):
-    return reduce(lambda curr, acc: compose_one(curr, acc), list(parsers))
+def sequence(*parsers):
+    return reduce(lambda curr, acc: sequence_one(curr, acc), list(parsers))
 
 
 def choice(*parsers):
     def choose(buffer):
         seq = map(lambda parser: parser(buffer), parsers)
 
-        for _ in range(len(list(parsers))):
+        for i in range(len(list(parsers))):
             try:
                 res = next(seq)
+                if type(res) == Unit:
+                    return res
                 if type(res) != str:
+                    return res
+                if i == len(parsers) - 1:
                     return res
             except IndexError:
                 continue
-
-        return 'Token invalid: \"%s\"' % buffer[0]['token']
-
     choose.__name__ = ' | '.join([item.__name__ for item in list(parsers)])
 
     return choose
+
+
+class Unit():
+    def __init__(self, value):
+        self.value = value
+
+    def unwrap(self):
+        return self.value

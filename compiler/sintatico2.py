@@ -1,4 +1,4 @@
-from compiler.combinators import choice, compose
+from compiler.combinators import Unit, choice, sequence
 from functools import reduce
 from logging import error
 from compiler.utils import get_symbol_table, head_value, head_type
@@ -17,23 +17,19 @@ logger.propagate = False
 coloredlogs.install(level=logging.DEBUG, logger=logger)
 
 
-# Gramatica
-
-# Terminais
-
 def fator(buffer):
     if head_type(buffer, TokenType.RealNumber):
         logger.debug('Fator: Numero real')
-        return buffer
+        return buffer[1:]
     if head_type(buffer, TokenType.Integer):
         logger.debug('Fator: Numero inteiro')
-        return buffer
+        return buffer[1:]
     if head_value(buffer, TokenValueRegex.BOOLEAN):
         logger.debug('Fator: Boolean')
-        return buffer
+        return buffer[1:]
     if head_value(buffer, TokenValueRegex.NOT):
         logger.debug('Fator: Negacao')
-        return buffer
+        return buffer[1:]
 
     return 'Fator invalido'
 
@@ -41,7 +37,7 @@ def fator(buffer):
 def abre_parentesis(buffer):
     if head_value(buffer, TokenValueRegex.OPEN_PARENTHESIS):
         logger.debug('Abre parentesis')
-        return buffer
+        return buffer[1:]
 
     return 'Abre parentesis esperado'
 
@@ -49,32 +45,32 @@ def abre_parentesis(buffer):
 def fecha_parentesis(buffer):
     if head_value(buffer, TokenValueRegex.CLOSE_PARENTHESIS):
         logger.debug('Fecha parentesis')
-        return buffer
+        return buffer[1:]
 
     return 'Fecha parentesis esperado'
 
 
 def sinal(buffer):
     if head_value(buffer, TokenValueRegex.SINAL):
-        return buffer
+        return buffer[1:]
 
     return 'Sinal invalido %s' % buffer[0]['token']
 
 
 def epsilon(buffer):
-    return tuple([buffer])
+    return Unit(buffer)
 
 
 def op_aditivo(buffer):
     if head_value(buffer, TokenValueRegex.OP_ADD):
-        return buffer
+        return buffer[1:]
 
     return 'operador aditivo esperado'
 
 
 def op_multiplicativo(buffer):
     if head_value(buffer, TokenValueRegex.OP_MULTI):
-        return buffer
+        return buffer[1:]
 
     return 'Operador operador multiplicativo esperado'
 
@@ -85,37 +81,37 @@ def end_of_file(buffer):
 
     return '\".\" esperado'
 
-# Expressoes
-
 
 def expressao_simples(buffer):
-    return choice(
-        compose(termo, expressao_simples2),
-        compose(sinal, termo, expressao_simples2)
-    )(buffer)
+    parser = choice(
+        sequence(termo, expressao_simples2),
+        sequence(sinal, termo, expressao_simples2)
+    )
+    return parser(buffer)
 
 
 def expressao_simples2(buffer):
-    return choice(
-        compose(op_aditivo, termo, expressao_simples2),
+    parser = choice(
+        sequence(op_aditivo, termo, expressao_simples2),
         epsilon
-    )(buffer)
+    )
+    return parser(buffer)
 
 
 def termo(buffer):
-    res = compose(
+    parser = sequence(
         fator,
         termo2
-    )(buffer)
-
-    return res
+    )
+    return parser(buffer)
 
 
 def termo2(buffer):
-    return choice(
-        compose(op_multiplicativo, fator, termo2),
+    parser = choice(
+        sequence(op_multiplicativo, fator, termo2),
         epsilon
-    )(buffer)
+    )
+    return parser(buffer)
 
 
 if __name__ == '__main__':
@@ -130,7 +126,7 @@ if __name__ == '__main__':
     pprint.pprint(sym_table)
 
     # Testes rapidos...
-    parser = compose(
+    parser = sequence(
         expressao_simples,
         end_of_file
     )
