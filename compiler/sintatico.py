@@ -38,7 +38,7 @@ class SyntacticAnalyzer():
     def compare_token_value(self, token_regex):
         return re.match(token_regex, self.current_token['token'])
 
-    def compare_token_type(self, token_type, token = None):
+    def compare_token_type(self, token_type, token=None):
         token = self.current_token['type'] if token == None else token['type']
         return token == token_type
 
@@ -457,5 +457,10 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
     logger.debug("Sintatico")
 
-    res = runSyntacticAnalysis('lexico_Test4.json')
-    logger.debug(json.dumps(res, indent=2))
+    res = runSyntacticAnalysis('lexico_Test5.json')
+
+    if res is None:
+        logger.debug('Compilado com sucesso')
+
+    else:
+        logger.error(json.dumps(res, indent=2))
