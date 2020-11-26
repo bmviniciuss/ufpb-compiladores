@@ -23,6 +23,14 @@ class SyntacticAnalyzer():
         else:
             raise Exception("EOF")
 
+    def peek_next(self):
+        if len(self.stack) > 0:
+            token = self.stack.pop()
+            self.stack.append(token)
+            return token
+        else:
+            raise Exception("EOF")
+
     def compare_token(self, token_type, token_regex):
         return self.compare_token_type(token_type) \
             and self.compare_token_value(token_regex)
@@ -30,8 +38,9 @@ class SyntacticAnalyzer():
     def compare_token_value(self, token_regex):
         return re.match(token_regex, self.current_token['token'])
 
-    def compare_token_type(self, token_type):
-        return self.current_token['type'] == token_type
+    def compare_token_type(self, token_type, token=None):
+        token = self.current_token['type'] if token == None else token['type']
+        return token == token_type
 
     def process_variables_declaration(self):
         if self.compare_token_value(TokenValueRegex.VAR):
@@ -90,6 +99,7 @@ class SyntacticAnalyzer():
                 'Erro: o programa espera um identificador válido.'))
 
     def process_identifiers_list_2(self):
+        print("CURRENT TOKEN", self.current_token)
         if self.compare_token_value(TokenValueRegex.COMMA):
             self.get_next_token()
             if self.compare_token_type(TokenType.Identifier):
@@ -128,8 +138,9 @@ class SyntacticAnalyzer():
                 self.get_next_token()
                 self.process_arguments()
 
-                if self.compare_token(TokenType.Delimiter, TokenValueRegex.SEMICOLON):
+                if self.compare_token_value(TokenValueRegex.SEMICOLON):
                     self.get_next_token()
+
                     self.process_variables_declaration()
                     self.process_sub_programs_declararion()
                     self.process_compound_command()
@@ -161,6 +172,7 @@ class SyntacticAnalyzer():
             self.get_next_token()
             self.process_type()
             self.process_params_list_2()
+
         else:
             raise Exception(self.format_error_message(
                 'Esperado ":" apos lista de identificadoers'))
@@ -211,7 +223,18 @@ class SyntacticAnalyzer():
             self.process_list_of_commands_2()
 
     def process_command(self):
-        if self.compare_token_value(TokenValueRegex.IF):
+        if self.compare_token_type(TokenType.Identifier) and self.compare_token_type(TokenType.AttributionOperator, self.peek_next()):
+            self.process_variable()
+
+            if self.compare_token_type(TokenType.AttributionOperator):
+                self.get_next_token()
+                self.process_expression()
+
+        elif self.compare_token_type(TokenType.Identifier):
+            self.process_procedure_activation()
+        elif self.compare_token_value(TokenValueRegex.BEGIN):
+            self.process_compound_command()
+        elif self.compare_token_value(TokenValueRegex.IF):
             self.get_next_token()
             self.process_expression()
 
@@ -222,29 +245,19 @@ class SyntacticAnalyzer():
             else:
                 raise Exception(self.format_error_message(
                     '"then" esperado para o comando if.'))
-
-        if self.compare_token_value(TokenValueRegex.WHILE):
+        elif self.compare_token_value(TokenValueRegex.WHILE):
             self.get_next_token()
             self.process_expression()
 
             if self.compare_token_value(TokenValueRegex.DO):
+                self.get_next_token()
                 self.process_command()
-                pass
             else:
                 raise Exception(self.format_error_message(
                     '"do" esperado para o comando while.'))
-
-        if self.compare_token_value(TokenValueRegex.BEGIN):
-            self.process_compound_command()
-
-        if self.compare_token_type(TokenType.Identifier):
-            self.get_next_token()
-            if self.compare_token_value(TokenValueRegex.ASSIGNMENT):
-                self.get_next_token()
-                self.process_expression()
-            elif self.compare_token_value(TokenValueRegex.OPEN_PARENTHESIS):
-                self.process_procedure_activation()
-            # TODO: add except
+        else:
+            raise Exception(self.format_error_message(
+                'comando esperado.'))
 
     def process_else(self):
         if self.compare_token_value(TokenValueRegex.ELSE):
@@ -252,22 +265,28 @@ class SyntacticAnalyzer():
             self.process_command()
 
     def process_variable(self):
-        pass
-
-    def process_procedure_activation(self):
-        if self.compare_token_value(TokenValueRegex.OPEN_PARENTHESIS):
+        if self.compare_token_type(TokenType.Identifier):
             self.get_next_token()
-            self.process_list_of_expressions()
-
-            if self.compare_token_value(TokenValueRegex.CLOSE_PARENTHESIS):
-                self.get_next_token()
-            else:
-                raise Exception(self.format_error_message(
-                    '")" esperado para ativação de comando.'))
-
         else:
             raise Exception(self.format_error_message(
-                '"(" esperado para ativação de comando.'))
+                'Variável esperado.'))
+
+    def process_procedure_activation(self):
+        if self.compare_token_type(TokenType.Identifier):
+            self.get_next_token()
+
+            if self.compare_token_value(TokenValueRegex.OPEN_PARENTHESIS):
+                self.get_next_token()
+                self.process_list_of_expressions()
+
+                if self.compare_token_value(TokenValueRegex.CLOSE_PARENTHESIS):
+                    self.get_next_token()
+                else:
+                    raise Exception(self.format_error_message(
+                        ') esperado.'))
+        else:
+            raise Exception(self.format_error_message(
+                'Identificador esperado.'))
 
     def process_list_of_expressions(self):
         self.process_expression()
@@ -275,6 +294,7 @@ class SyntacticAnalyzer():
 
     def process_list_of_expressions_2(self):
         if self.compare_token_value(TokenValueRegex.COMMA):
+            self.get_next_token()
             self.process_expression()
             self.process_list_of_expressions_2()
 
@@ -282,14 +302,18 @@ class SyntacticAnalyzer():
         self.process_simple_expression()
 
         if self.compare_token_value(TokenValueRegex.OP_RELATIONAL):
-            self.get_next_token()
+            self.process_op_relacional()
             self.process_simple_expression()
 
     def process_simple_expression(self):
         if self.compare_token_value(TokenValueRegex.SINAL):
             self.process_sinal()
-        self.process_term()
-        self.process_simple_expression_2()
+
+            self.process_term()
+            self.process_simple_expression_2()
+        else:
+            self.process_term()
+            self.process_simple_expression_2()
 
     def process_simple_expression_2(self):
         if self.compare_token_value(TokenValueRegex.OP_ADD):
@@ -308,8 +332,10 @@ class SyntacticAnalyzer():
             self.process_term_2()
 
     def process_fator(self):
+        if self.compare_token_type(TokenType.Identifier):
+            self.process_procedure_activation()
 
-        if self.compare_token_type(TokenType.Integer):
+        elif self.compare_token_type(TokenType.Integer):
             self.get_next_token()
 
         elif self.compare_token_type(TokenType.RealNumber):
@@ -318,56 +344,50 @@ class SyntacticAnalyzer():
         elif self.compare_token_value(TokenValueRegex.BOOLEAN):
             self.get_next_token()
 
+        elif self.compare_token_value(TokenValueRegex.OPEN_PARENTHESIS):
+            self.get_next_token()
+            self.process_expression()
+
+            if self.compare_token_value(TokenValueRegex.CLOSE_PARENTHESIS):
+                self.get_next_token()
+            else:
+                raise Exception(self.format_error_message(
+                    ') esperado.'))
+
         elif self.compare_token_value(TokenValueRegex.NOT):
             self.get_next_token()
             self.process_fator()
 
-        elif self.compare_token(TokenType.Delimiter, TokenValueRegex.OPEN_PARENTHESIS):
-            self.get_next_token()
-
-            self.process_expression()
-            if self.compare_token(TokenType.Delimiter, TokenValueRegex.CLOSE_PARENTHESIS):
-                self.get_next_token()
-            else:
-                raise Exception('Esperado fechamento de parentesis')
-
-        elif self.compare_token_type(TokenType.Identifier):
-            self.get_next_token()
-            if self.compare_token(TokenType.Delimiter, TokenValueRegex.OPEN_PARENTHESIS):
-                self.get_next_token()
-                self.process_list_of_expressions()
-
-                if self.compare_token(TokenType.Delimiter, TokenValueRegex.CLOSE_PARENTHESIS):
-                    self.get_next_token()
-                else:
-                    raise Exception('Esperado fechamento de parentesis')
-
         else:
-            raise Exception()
+            raise Exception('Fator esperado.')
 
     def process_sinal(self):
         if self.compare_token_value(TokenValueRegex.SINAL):
             self.get_next_token()
         else:
-            raise Exception()
+            raise Exception(self.format_error_message(
+                'Sinal esperado'))
 
     def process_op_relacional(self):
         if self.compare_token_value(TokenValueRegex.OP_RELATIONAL):
             self.get_next_token()
         else:
-            raise Exception()
+            raise Exception(self.format_error_message(
+                'Operador relacional esperado.'))
 
     def process_op_aditivo(self):
         if self.compare_token_value(TokenValueRegex.OP_ADD):
             self.get_next_token()
         else:
-            raise Exception()
+            raise Exception(self.format_error_message(
+                'Operador aditivo esperado.'))
 
     def process_op_multiplicativo(self):
         if self.compare_token_value(TokenValueRegex.OP_MULTI):
             self.get_next_token()
         else:
-            raise Exception()
+            raise Exception(self.format_error_message(
+                'Operador multiplicativo esperado.'))
 
     def process_type(self):
         if self.compare_token_value(TokenValueRegex.VAR_TYPE):
@@ -378,46 +398,45 @@ class SyntacticAnalyzer():
 
     def process(self, token_table):
         self.stack = list(reversed(token_table))
+        self.get_next_token()
 
-        while len(self.stack) > 0:
+        if self.compare_token(TokenType.Keyword, TokenValueRegex.PROGRAM):
             self.get_next_token()
-            if self.compare_token(TokenType.Keyword, TokenValueRegex.PROGRAM):
+
+            if self.compare_token_type(TokenType.Identifier):
                 self.get_next_token()
 
-                if self.compare_token_type(TokenType.Identifier):
+                if self.compare_token_value(TokenValueRegex.SEMICOLON):
                     self.get_next_token()
+                    self.process_variables_declaration()
+                    self.process_sub_programs_declararion()
+                    self.process_compound_command()
 
-                    if self.compare_token(TokenType.Delimiter, TokenValueRegex.SEMICOLON):
-                        self.get_next_token()
-                        self.process_variables_declaration()
-                        self.process_sub_programs_declararion()
-                        self.process_compound_command()
-
-                        if not self.compare_token_value(TokenValueRegex.POINT):
-                            raise Exception(
-                                self.format_error_message(
-                                    "Error: final delimiter '.' was expected."
-                                )
-                            )
-
-                    else:
+                    if not self.compare_token_value(TokenValueRegex.POINT):
                         raise Exception(
                             self.format_error_message(
-                                "Error: delimiter ';' was expected."
+                                "Error: final delimiter '.' was expected."
                             )
                         )
 
                 else:
                     raise Exception(
                         self.format_error_message(
-                            "Error: An valid identifier was expected."
+                            "Error: delimiter ';' was expected."
                         )
                     )
 
             else:
-                raise Exception(self.format_error_message(
-                    "Error: 'program' identifier was not found."
-                ))
+                raise Exception(
+                    self.format_error_message(
+                        "Error: An valid identifier was expected."
+                    )
+                )
+
+        else:
+            raise Exception(self.format_error_message(
+                "Error: 'program' identifier was not found."
+            ))
 
     def format_error_message(self, message):
         if self.current_token:
@@ -438,5 +457,10 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
     logger.debug("Sintatico")
 
-    res = runSyntacticAnalysis('lexico_Test3.json')
-    logger.debug(json.dumps(res, indent=2))
+    res = runSyntacticAnalysis('lexico_Test5.json')
+
+    if res is None:
+        logger.debug('Compilado com sucesso')
+
+    else:
+        logger.error(json.dumps(res, indent=2))
