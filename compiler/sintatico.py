@@ -1,7 +1,7 @@
 from logging import error
 from compiler.utils import get_symbol_table
 from compiler.types import TokenType, TokenValueRegex
-from compiler.lexico import TokenReader
+from compiler import lexico
 import logging
 import json
 import re
@@ -445,9 +445,14 @@ class SyntacticAnalyzer():
             return message
 
 
-def runSyntacticAnalysis(path, relative_path=False):
-    data = get_symbol_table(path, relative_path)
+def runSyntacticAnalysis(data):
+    if "error" in data:
+        raise Exception("LexicoError: Ocorreu um erro no analisador lexico.")
     return SyntacticAnalyzer().process(data['symbol_table'])
+
+def runSyntacticAnalysisFromFile(path, relative_path=False):
+    data = get_symbol_table(path, relative_path)
+    return runSyntacticAnalysis(data)
 
 
 if __name__ == '__main__':
@@ -457,7 +462,9 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
     logger.debug("Sintatico")
 
-    res = runSyntacticAnalysis('lexico_Test5.json')
+    file = "Test1.pas"
+    data = lexico.build_symbol_table('../pascal_sources/' + file, True);
+    res = runSyntacticAnalysis(data)
 
     if res is None:
         logger.debug('Compilado com sucesso')
