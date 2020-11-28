@@ -10,11 +10,22 @@ import re
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
+class IdentifiersStack():
+    def __init__(self):
+        self._stack = []
+
+    def push(self, identifier):
+        self._stack.append(identifier)
+
+    def pop(self):
+        if len(self._stack) > 0:
+            self._stack.pop();
 
 class SyntacticAnalyzer():
     def __init__(self):
         self.current_token = ""
         self.stack = []
+        self.identifiers_stack = IdentifiersStack()
 
     def get_next_token(self):
         if len(self.stack) > 0:
