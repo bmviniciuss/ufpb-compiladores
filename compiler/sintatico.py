@@ -14,18 +14,43 @@ class IdentifiersStack():
     def __init__(self):
         self._stack = []
 
+    def search(self, token_name):
+        for token in self._stack[::-1]:
+            if not token['token'] == "$" and token['token'] == token_name:
+                    return True
+        return False
+
     def push(self, identifier):
         self._stack.append(identifier)
+        self._print_stack()
 
     def pop(self):
         if len(self._stack) > 0:
             self._stack.pop();
+
+    def _print_stack(self):
+        s = "| "
+        for item in self._stack:
+            s += item['token'] + " | "
+        print('STACK: ', s)
 
 class SyntacticAnalyzer():
     def __init__(self):
         self.current_token = ""
         self.stack = []
         self.identifiers_stack = IdentifiersStack()
+
+    def add_current_token_to_identifier_stack(self):
+        if not self.identifiers_stack.search(self.current_token['token']):
+            self.identifiers_stack.push(self.current_token)
+        else:
+            raise Exception(self.format_error_message(
+                "SemanticoError: variável " + self.current_token['token'] + " já foi declarada."
+            ))
+
+    def add_scope_mark(self):
+        mark_token = {"type": "MARK", "token": "$"}
+        self.identifiers_stack.push(mark_token)
 
     def get_next_token(self):
         if len(self.stack) > 0:
@@ -103,6 +128,8 @@ class SyntacticAnalyzer():
 
     def process_identifiers_list(self):
         if self.compare_token_type(TokenType.Identifier):
+            self.add_current_token_to_identifier_stack()
+
             self.get_next_token()
             self.process_identifiers_list_2()
         else:
@@ -110,10 +137,11 @@ class SyntacticAnalyzer():
                 'Erro: o programa espera um identificador válido.'))
 
     def process_identifiers_list_2(self):
-        print("CURRENT TOKEN", self.current_token)
         if self.compare_token_value(TokenValueRegex.COMMA):
             self.get_next_token()
             if self.compare_token_type(TokenType.Identifier):
+                self.add_current_token_to_identifier_stack()
+
                 self.get_next_token()
                 self.process_identifiers_list_2()
             else:
@@ -412,9 +440,11 @@ class SyntacticAnalyzer():
         self.get_next_token()
 
         if self.compare_token(TokenType.Keyword, TokenValueRegex.PROGRAM):
+            self.add_scope_mark()
             self.get_next_token()
 
             if self.compare_token_type(TokenType.Identifier):
+                self.identifiers_stack.push(self.current_token);
                 self.get_next_token()
 
                 if self.compare_token_value(TokenValueRegex.SEMICOLON):
