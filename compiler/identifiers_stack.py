@@ -21,3 +21,12 @@ class IdentifiersStack():
         for item in self._stack:
             s += item['token'] + " | "
         print('STACK: ', s)
+
+    def close_scope(self):
+        for token in self._stack[::-1]:
+            if token['token'] != '$':
+                self.pop()
+            else:
+                self.pop()
+                break
+        self._print_stack()
