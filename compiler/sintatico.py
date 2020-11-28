@@ -2,6 +2,7 @@ from logging import error
 from compiler.utils import get_symbol_table
 from compiler.types import TokenType, TokenValueRegex
 from compiler import lexico
+from compiler.identifiers_stack import IdentifiersStack
 import logging
 import json
 import re
@@ -9,30 +10,6 @@ import re
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
-
-class IdentifiersStack():
-    def __init__(self):
-        self._stack = []
-
-    def search(self, token_name):
-        for token in self._stack[::-1]:
-            if not token['token'] == "$" and token['token'] == token_name:
-                    return True
-        return False
-
-    def push(self, identifier):
-        self._stack.append(identifier)
-        self._print_stack()
-
-    def pop(self):
-        if len(self._stack) > 0:
-            self._stack.pop();
-
-    def _print_stack(self):
-        s = "| "
-        for item in self._stack:
-            s += item['token'] + " | "
-        print('STACK: ', s)
 
 class SyntacticAnalyzer():
     def __init__(self):
