@@ -130,6 +130,8 @@ class SyntacticAnalyzer():
             self.process_sub_program_declaration()
 
             if self.compare_token_value(TokenValueRegex.SEMICOLON):
+                self.identifiers_stack.close_scope()
+
                 self.get_next_token()
                 self.process_sub_programs_declararion_2()
 
@@ -141,6 +143,8 @@ class SyntacticAnalyzer():
             self.process_sub_program_declaration()
 
             if self.compare_token(TokenType.Delimiter, TokenValueRegex.SEMICOLON):
+                self.identifiers_stack.close_scope()
+
                 self.get_next_token()
                 self.process_sub_programs_declararion_2()
 
