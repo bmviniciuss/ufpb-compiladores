@@ -151,6 +151,9 @@ class SyntacticAnalyzer():
         if self.compare_token_value(TokenValueRegex.PROCEDURE):
             self.get_next_token()
             if self.compare_token_type(TokenType.Identifier):
+                self.add_current_token_to_identifier_stack()
+                self.add_scope_mark()
+
                 self.get_next_token()
                 self.process_arguments()
 
