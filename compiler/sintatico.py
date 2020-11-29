@@ -148,6 +148,7 @@ class SyntacticAnalyzer():
 
             if self.compare_token_value(TokenValueRegex.SEMICOLON):
                 self.identifiers_stack.close_scope()
+                self.typed_identifiers.close_scope()
 
                 self.get_next_token()
                 self.process_sub_programs_declararion_2()
@@ -161,6 +162,7 @@ class SyntacticAnalyzer():
 
             if self.compare_token(TokenType.Delimiter, TokenValueRegex.SEMICOLON):
                 self.identifiers_stack.close_scope()
+                self.typed_identifiers.close_scope()
 
                 self.get_next_token()
                 self.process_sub_programs_declararion_2()
@@ -173,6 +175,7 @@ class SyntacticAnalyzer():
             self.get_next_token()
             if self.compare_token_type(TokenType.Identifier):
                 self.add_current_token_to_identifier_stack()
+                self.typed_identifiers.push({"token": self.current_token['token'], "type": "PROCEDURE"})
                 self.add_scope_mark()
 
                 self.get_next_token()
@@ -448,6 +451,7 @@ class SyntacticAnalyzer():
 
             if self.compare_token_type(TokenType.Identifier):
                 self.identifiers_stack.push(self.current_token);
+                self.typed_identifiers.push({ "token": self.current_token["token"], "type": "PROGRAM"})
                 self.get_next_token()
 
                 if self.compare_token_value(TokenValueRegex.SEMICOLON):
