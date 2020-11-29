@@ -16,6 +16,18 @@ class SyntacticAnalyzer():
         self.current_token = ""
         self.stack = []
         self.identifiers_stack = IdentifiersStack()
+        self.typed_identifiers = []
+
+    def print_typed_identifiers(self):
+        s = "|"
+        for identifier in self.typed_identifiers:
+            s += " " + identifier['identifier']['token'] + ": " + identifier['var_type'] + " |"
+        print(s)
+
+    def add_typed_identifiers(self, type, identifiers):
+        for item in identifiers:
+            self.typed_identifiers.append({ "identifier": item, "var_type": type})
+
 
     def add_current_token_to_identifier_stack(self):
         if not self.identifiers_stack.search(self.current_token['token']):
@@ -61,10 +73,13 @@ class SyntacticAnalyzer():
             self.process_variables_list_declaration()
 
     def process_variables_list_declaration(self):
-        self.process_identifiers_list()
+        identifiers = self.process_identifiers_list()
+        print(identifiers)
         if self.compare_token_value(TokenValueRegex.COLON):
             self.get_next_token()
-            self.process_type()
+            type = self.process_type()
+            self.add_typed_identifiers(type, identifiers)
+            self.print_typed_identifiers()
 
             if self.compare_token_value(TokenValueRegex.SEMICOLON):
                 self.get_next_token()
@@ -82,11 +97,13 @@ class SyntacticAnalyzer():
 
     def process_variables_list_declaration_2(self):
         if self.compare_token_type(TokenType.Identifier):
-            self.process_identifiers_list()
-
+            identifiers = self.process_identifiers_list()
+            print(identifiers)
             if self.compare_token_value(TokenValueRegex.COLON):
                 self.get_next_token()
-                self.process_type()
+                type = self.process_type()
+                self.add_typed_identifiers(type, identifiers)
+                self.print_typed_identifiers()
 
                 if self.compare_token_value(TokenValueRegex.SEMICOLON):
                     self.get_next_token()
@@ -104,26 +121,33 @@ class SyntacticAnalyzer():
                     ))
 
     def process_identifiers_list(self):
+        identifiers_buffer = []
         if self.compare_token_type(TokenType.Identifier):
             self.add_current_token_to_identifier_stack()
+            identifiers_buffer.append(self.current_token)
 
             self.get_next_token()
-            self.process_identifiers_list_2()
+            identifiers_buffer += self.process_identifiers_list_2()
+            return identifiers_buffer
         else:
             raise Exception(self.format_error_message(
                 'Erro: o programa espera um identificador válido.'))
 
     def process_identifiers_list_2(self):
+        identifiers_buffer = []
+
         if self.compare_token_value(TokenValueRegex.COMMA):
             self.get_next_token()
             if self.compare_token_type(TokenType.Identifier):
                 self.add_current_token_to_identifier_stack()
+                identifiers_buffer.append(self.current_token)
 
                 self.get_next_token()
-                self.process_identifiers_list_2()
+                identifiers_buffer += self.process_identifiers_list_2()
             else:
                 raise Exception(self.format_error_message(
                     'Erro: o programa espera um identificador válido.'))
+        return identifiers_buffer
 
     def process_sub_programs_declararion(self):
         if self.compare_token_value(TokenValueRegex.PROCEDURE):
@@ -414,7 +438,9 @@ class SyntacticAnalyzer():
 
     def process_type(self):
         if self.compare_token_value(TokenValueRegex.VAR_TYPE):
+            type = self.current_token['token']
             self.get_next_token()
+            return type
         else:
             raise Exception(self.format_error_message(
                 'Tipo de variável não permitido.'))
