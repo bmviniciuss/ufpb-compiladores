@@ -7,16 +7,11 @@ class PCT():
 
     def pop(self):
         if len(self._stack) > 0:
-            return self._stack.pop();
+            return self._stack.pop()
 
     def peekTop(self):
         if len(self._stack) > 0:
-            return self._stack[0]
-        return ""
-
-    def peekSubTop(self):
-        if len(self._stack) > 1:
-            return self._stack[1]
+            return self._stack[-1]
         return ""
 
     def print(self):

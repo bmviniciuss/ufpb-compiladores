@@ -1,17 +1,22 @@
 from logging import error
+from os import path
 from compiler.utils import get_symbol_table
 from compiler.types import TokenType, TokenValueRegex
 from compiler import lexico
 from compiler.identifiers_stack import IdentifiersStack
 from compiler.typed_identifiers_stack import TypedIdentifiersStack
 from compiler.pct import PCT
+
+import pathlib
 import logging
 import json
 import re
+import sys
 
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
+
 
 class SyntacticAnalyzer():
     def __init__(self):
@@ -34,7 +39,7 @@ class SyntacticAnalyzer():
 
     def add_typed_identifiers(self, type, identifiers):
         for token in identifiers:
-            item = { "token": token, "type": type}
+            item = {"token": token, "type": type}
             self.typed_identifiers.push(item)
 
     def add_current_token_to_identifier_stack(self):
@@ -42,7 +47,8 @@ class SyntacticAnalyzer():
             self.identifiers_stack.push(self.current_token)
         else:
             raise Exception(self.format_error_message(
-                "SemanticoError: variável " + self.current_token['token'] + " já foi declarada."
+                "SemanticoError: variável " +
+                self.current_token['token'] + " já foi declarada."
             ))
 
     def add_scope_mark(self):
@@ -188,7 +194,8 @@ class SyntacticAnalyzer():
             self.get_next_token()
             if self.compare_token_type(TokenType.Identifier):
                 self.add_current_token_to_identifier_stack()
-                self.typed_identifiers.push({"token": self.current_token['token'], "type": "PROCEDURE"})
+                self.typed_identifiers.push(
+                    {"token": self.current_token['token'], "type": "PROCEDURE"})
                 self.add_scope_mark()
 
                 self.get_next_token()
@@ -536,7 +543,7 @@ class SyntacticAnalyzer():
         top = self.pct.pop()
         new_top = self.pct.peekTop()
 
-        if top == "integer" and new_top == "real" :
+        if top == "integer" and new_top == "real":
             self.pct.pop()
         elif self.pct.peekTop() == top:
             self.pct.pop()
@@ -554,8 +561,9 @@ class SyntacticAnalyzer():
             self.get_next_token()
 
             if self.compare_token_type(TokenType.Identifier):
-                self.identifiers_stack.push(self.current_token);
-                self.typed_identifiers.push({ "token": self.current_token["token"], "type": "PROGRAM"})
+                self.identifiers_stack.push(self.current_token)
+                self.typed_identifiers.push(
+                    {"token": self.current_token["token"], "type": "PROGRAM"})
                 self.get_next_token()
 
                 if self.compare_token_value(TokenValueRegex.SEMICOLON):
@@ -602,20 +610,26 @@ def runSyntacticAnalysis(data):
         raise Exception("LexicoError: Ocorreu um erro no analisador lexico.")
     return SyntacticAnalyzer().process(data['symbol_table'])
 
+
 def runSyntacticAnalysisFromFile(path, relative_path=False):
     data = get_symbol_table(path, relative_path)
     return runSyntacticAnalysis(data)
 
 
 if __name__ == '__main__':
-    logger.debug(1)
-
     # Testes rapidos...
     logging.basicConfig(level=logging.DEBUG)
     logger.debug("Sintatico")
 
-    file = "Test3.pas"
-    data = lexico.build_symbol_table('../pascal_sources/' + file, True);
+    base_path = pathlib.Path(__file__).parent.resolve()
+    file_name = 'Test3.pas'
+    if '-name' in sys.argv:
+        file_name = sys.argv[sys.argv.index('-name') + 1]
+    file_path = path.join(base_path, '../pascal_sources', file_name)
+
+    data = lexico.build_symbol_table(
+        file_path, True)
+
     res = runSyntacticAnalysis(data)
 
     if res is None:
