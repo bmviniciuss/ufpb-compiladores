@@ -3,6 +3,7 @@ from compiler.utils import get_symbol_table
 from compiler.types import TokenType, TokenValueRegex
 from compiler import lexico
 from compiler.identifiers_stack import IdentifiersStack
+from compiler.typed_identifiers_stack import TypedIdentifiersStack
 import logging
 import json
 import re
@@ -16,18 +17,12 @@ class SyntacticAnalyzer():
         self.current_token = ""
         self.stack = []
         self.identifiers_stack = IdentifiersStack()
-        self.typed_identifiers = []
-
-    def print_typed_identifiers(self):
-        s = "|"
-        for identifier in self.typed_identifiers:
-            s += " " + identifier['identifier'] + ": " + identifier['var_type'] + " |"
-        print(s)
+        self.typed_identifiers = TypedIdentifiersStack()
 
     def add_typed_identifiers(self, type, identifiers):
-        for item in identifiers:
-            self.typed_identifiers.append({ "identifier": item, "var_type": type})
-
+        for token in identifiers:
+            item = { "token": token, "var_type": type}
+            self.typed_identifiers.push(item)
 
     def add_current_token_to_identifier_stack(self):
         if not self.identifiers_stack.search(self.current_token['token']):
@@ -74,12 +69,11 @@ class SyntacticAnalyzer():
 
     def process_variables_list_declaration(self):
         identifiers = self.process_identifiers_list()
-        print(identifiers)
         if self.compare_token_value(TokenValueRegex.COLON):
             self.get_next_token()
             type = self.process_type()
             self.add_typed_identifiers(type, identifiers)
-            self.print_typed_identifiers()
+            self.typed_identifiers.print()
 
             if self.compare_token_value(TokenValueRegex.SEMICOLON):
                 self.get_next_token()
@@ -98,12 +92,11 @@ class SyntacticAnalyzer():
     def process_variables_list_declaration_2(self):
         if self.compare_token_type(TokenType.Identifier):
             identifiers = self.process_identifiers_list()
-            print(identifiers)
             if self.compare_token_value(TokenValueRegex.COLON):
                 self.get_next_token()
                 type = self.process_type()
                 self.add_typed_identifiers(type, identifiers)
-                self.print_typed_identifiers()
+                self.typed_identifiers.print()
 
                 if self.compare_token_value(TokenValueRegex.SEMICOLON):
                     self.get_next_token()
