@@ -19,6 +19,12 @@ class SyntacticAnalyzer():
         self.identifiers_stack = IdentifiersStack()
         self.typed_identifiers = TypedIdentifiersStack()
 
+    def check_identifier_declaration(self, identifier):
+        if not self.identifiers_stack.search(identifier):
+            raise Exception(self.format_error_message(
+                "Idendificador " + identifier + " não foi declarado."
+            ))
+
     def add_typed_identifiers(self, type, identifiers):
         for token in identifiers:
             item = { "token": token, "type": type}
@@ -312,11 +318,7 @@ class SyntacticAnalyzer():
 
     def process_variable(self):
         if self.compare_token_type(TokenType.Identifier):
-            if not self.identifiers_stack.search(self.current_token['token']):
-                raise Exception(self.format_error_message(
-                    "Idendificador " + self.current_token['token'] + " não foi declarado."
-                ))
-
+            self.check_identifier_declaration(self.current_token['token'])
             self.get_next_token()
         else:
             raise Exception(self.format_error_message(
