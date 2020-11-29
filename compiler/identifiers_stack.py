@@ -5,7 +5,7 @@ class IdentifiersStack():
     def search(self, token_name):
         for token in self._stack[::-1]:
             if not token['token'] == "$" and token['token'] == token_name:
-                    return True
+                    return token
         return False
 
     def push(self, identifier):

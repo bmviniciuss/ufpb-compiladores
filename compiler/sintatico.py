@@ -312,6 +312,11 @@ class SyntacticAnalyzer():
 
     def process_variable(self):
         if self.compare_token_type(TokenType.Identifier):
+            if not self.identifiers_stack.search(self.current_token['token']):
+                raise Exception(self.format_error_message(
+                    "Idendificador " + self.current_token['token'] + " não foi declarado."
+                ))
+
             self.get_next_token()
         else:
             raise Exception(self.format_error_message(
