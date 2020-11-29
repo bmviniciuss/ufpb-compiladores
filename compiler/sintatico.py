@@ -289,6 +289,8 @@ class SyntacticAnalyzer():
                 self.get_next_token()
                 self.process_expression()
 
+            self.verify_attribution()
+
         elif self.compare_token_type(TokenType.Identifier):
             self.process_procedure_activation()
         elif self.compare_token_value(TokenValueRegex.BEGIN):
@@ -371,6 +373,8 @@ class SyntacticAnalyzer():
             self.process_op_relacional()
             self.process_simple_expression()
 
+            self.verify_relational_expression()
+
     def process_simple_expression(self):
         if self.compare_token_value(TokenValueRegex.SINAL):
             self.process_sinal()
@@ -383,10 +387,16 @@ class SyntacticAnalyzer():
 
     def process_simple_expression_2(self):
         if self.compare_token_value(TokenValueRegex.OP_ADD):
-            self.process_op_aditivo()
-            self.process_term()
-            self.process_simple_expression_2()
-            self.verify_arithmetic_expression()
+            if self.compare_token_value(TokenValueRegex.SINAL):
+                self.process_op_aditivo()
+                self.process_term()
+                self.process_simple_expression_2()
+                self.verify_arithmetic_expression()
+            elif self.compare_token_value(TokenValueRegex.OR):
+                self.process_op_aditivo()
+                self.process_term()
+                self.process_simple_expression_2()
+                self.verify_logic_expression()
 
     def process_term(self):
         self.process_fator()
@@ -394,10 +404,16 @@ class SyntacticAnalyzer():
 
     def process_term_2(self):
         if self.compare_token_value(TokenValueRegex.OP_MULTI):
-            self.process_op_multiplicativo()
-            self.process_fator()
-            self.process_term_2()
-            self.verify_arithmetic_expression()
+            if self.compare_token_value(TokenValueRegex.OP_MULTI_SIGNAL):
+                self.process_op_multiplicativo()
+                self.process_fator()
+                self.process_term_2()
+                self.verify_arithmetic_expression()
+            elif self.compare_token_value(TokenValueRegex.OP_MULTI_AND):
+                self.process_op_multiplicativo()
+                self.process_fator()
+                self.process_term_2()
+                self.verify_logic_expression()
 
     def process_fator(self):
         if self.compare_token_type(TokenType.Identifier):
@@ -472,25 +488,61 @@ class SyntacticAnalyzer():
 
     def verify_arithmetic_expression(self):
         top = self.pct.pop()
-        subTop = self.pct.pop()
+        sub_top = self.pct.pop()
 
-        print("VERIFY: ",top, subTop)
-
-        if top == "interger" and subTop == "integer":
+        if top == "integer" and sub_top == "integer":
             self.pct.push('integer')
 
-        elif top == "real" and subTop == "real":
+        elif top == "real" and sub_top == "real":
             self.pct.push('real')
 
-        elif top == "integer" and subTop == "real":
+        elif top == "integer" and sub_top == "real":
             self.pct.push('real')
 
-        elif top == "real" and subTop == "integer":
+        elif top == "real" and sub_top == "integer":
             self.pct.push('real')
 
         else:
             raise Exception(self.format_error_message(
-                "Tipos incompatíveis da operação."
+                "Tipos incompatíveis da operação aritmética."
+            ))
+
+    def verify_relational_expression(self):
+        top = self.pct.pop()
+        sub_top = self.pct.pop()
+        allowed_types = ['integer', 'real']
+
+        if top in allowed_types and sub_top in allowed_types:
+            self.pct.push('boolean')
+
+        else:
+            raise Exception(self.format_error_message(
+                "Tipos incompatíveis da operação relacional"
+            ))
+
+    def verify_logic_expression(self):
+        top = self.pct.pop()
+        sub_top = self.pct.pop()
+
+        if top == sub_top:
+            self.pct.push('boolean')
+        else:
+            raise Exception(self.format_error_message(
+                "Tipos incompatíveis da operação lógica"
+            ))
+
+    def verify_attribution(self):
+        self.pct.print()
+        top = self.pct.pop()
+        new_top = self.pct.peekTop()
+
+        if top == "integer" and new_top == "real" :
+            self.pct.pop()
+        elif self.pct.peekTop() == top:
+            self.pct.pop()
+        else:
+            raise Exception(self.format_error_message(
+                "Tipos incompatíveis na atribuição."
             ))
 
     def process(self, token_table):
@@ -562,7 +614,7 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
     logger.debug("Sintatico")
 
-    file = "Test1.pas"
+    file = "Test3.pas"
     data = lexico.build_symbol_table('../pascal_sources/' + file, True);
     res = runSyntacticAnalysis(data)
 

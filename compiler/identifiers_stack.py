@@ -20,7 +20,7 @@ class IdentifiersStack():
         s = "| "
         for item in self._stack:
             s += item['token'] + " | "
-        print('STACK: ', s)
+        # print('STACK: ', s)
 
     def close_scope(self):
         for token in self._stack[::-1]:

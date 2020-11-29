@@ -20,7 +20,7 @@ class TypedIdentifiersStack():
         s = "| "
         for item in self._stack:
             s += item['token'] + ": "+ item["type"] + " | "
-        print('TYPED_STACK: ', s)
+        # print('TYPED_STACK: ', s)
 
     def close_scope(self):
         for token in self._stack[::-1]:
