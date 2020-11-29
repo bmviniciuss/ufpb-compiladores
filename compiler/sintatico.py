@@ -210,10 +210,11 @@ class SyntacticAnalyzer():
                 )
 
     def process_params_list(self):
-        self.process_identifiers_list()
+        identifiers = self.process_identifiers_list()
         if self.compare_token_value(TokenValueRegex.COLON):
             self.get_next_token()
-            self.process_type()
+            type = self.process_type()
+            self.add_typed_identifiers(type, identifiers)
             self.process_params_list_2()
 
         else:
@@ -223,11 +224,13 @@ class SyntacticAnalyzer():
     def process_params_list_2(self):
         if self.compare_token_value(TokenValueRegex.SEMICOLON):
             self.get_next_token()
-            self.process_identifiers_list()
+            identifiers = self.process_identifiers_list()
 
             if self.compare_token_value(TokenValueRegex.COLON):
                 self.get_next_token()
-                self.process_type()
+                type = self.process_type()
+                self.add_typed_identifiers(type, identifiers)
+
                 self.process_params_list_2()
             else:
                 raise Exception(self.format_error_message(
