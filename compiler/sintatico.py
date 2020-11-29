@@ -21,7 +21,7 @@ class SyntacticAnalyzer():
 
     def add_typed_identifiers(self, type, identifiers):
         for token in identifiers:
-            item = { "token": token, "var_type": type}
+            item = { "token": token, "type": type}
             self.typed_identifiers.push(item)
 
     def add_current_token_to_identifier_stack(self):
@@ -33,8 +33,8 @@ class SyntacticAnalyzer():
             ))
 
     def add_scope_mark(self):
-        mark_token = {"type": "MARK", "token": "$"}
-        self.identifiers_stack.push(mark_token)
+        self.identifiers_stack.push({"token": "$", "type": "MARK"})
+        self.typed_identifiers.push({"token": "$", "type": "MARK"})
 
     def get_next_token(self):
         if len(self.stack) > 0:
