@@ -4,6 +4,7 @@ from compiler.types import TokenType, TokenValueRegex
 from compiler import lexico
 from compiler.identifiers_stack import IdentifiersStack
 from compiler.typed_identifiers_stack import TypedIdentifiersStack
+from compiler.pct import PCT
 import logging
 import json
 import re
@@ -18,6 +19,12 @@ class SyntacticAnalyzer():
         self.stack = []
         self.identifiers_stack = IdentifiersStack()
         self.typed_identifiers = TypedIdentifiersStack()
+        self.pct = PCT()
+
+    def search_identifier_and_add_to_pct(self, identifier_name):
+        identifier = self.typed_identifiers.search(identifier_name)
+        if identifier:
+            self.pct.push(identifier['type'])
 
     def check_identifier_declaration(self, identifier):
         if not self.identifiers_stack.search(identifier):
@@ -319,6 +326,9 @@ class SyntacticAnalyzer():
     def process_variable(self):
         if self.compare_token_type(TokenType.Identifier):
             self.check_identifier_declaration(self.current_token['token'])
+
+            self.search_identifier_and_add_to_pct(self.current_token['token'])
+
             self.get_next_token()
         else:
             raise Exception(self.format_error_message(
@@ -326,6 +336,9 @@ class SyntacticAnalyzer():
 
     def process_procedure_activation(self):
         if self.compare_token_type(TokenType.Identifier):
+            self.check_identifier_declaration(self.current_token['token'])
+            self.search_identifier_and_add_to_pct(self.current_token['token'])
+
             self.get_next_token()
 
             if self.compare_token_value(TokenValueRegex.OPEN_PARENTHESIS):
@@ -389,13 +402,16 @@ class SyntacticAnalyzer():
             self.process_procedure_activation()
 
         elif self.compare_token_type(TokenType.Integer):
-            self.get_next_token()
+            self.get_next_token(Integer)
+            self.pct.push(TokenType.Integer)
 
         elif self.compare_token_type(TokenType.RealNumber):
             self.get_next_token()
+            self.pct.push(TokenType.RealNumber)
 
         elif self.compare_token_value(TokenValueRegex.BOOLEAN):
             self.get_next_token()
+            self.pct.push("Boolean")
 
         elif self.compare_token_value(TokenValueRegex.OPEN_PARENTHESIS):
             self.get_next_token()
@@ -408,6 +424,7 @@ class SyntacticAnalyzer():
                     ') esperado.'))
 
         elif self.compare_token_value(TokenValueRegex.NOT):
+            self.pct.push("Boolean")
             self.get_next_token()
             self.process_fator()
 
