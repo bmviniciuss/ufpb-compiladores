@@ -4,11 +4,10 @@ class PCT():
 
     def push(self, type):
         self._stack.append(type)
-        self.print()
 
     def pop(self):
         if len(self._stack) > 0:
-            self._stack.pop();
+            return self._stack.pop();
 
     def peekTop(self):
         if len(self._stack) > 0:
