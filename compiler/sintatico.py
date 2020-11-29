@@ -21,7 +21,7 @@ class SyntacticAnalyzer():
     def print_typed_identifiers(self):
         s = "|"
         for identifier in self.typed_identifiers:
-            s += " " + identifier['identifier']['token'] + ": " + identifier['var_type'] + " |"
+            s += " " + identifier['identifier'] + ": " + identifier['var_type'] + " |"
         print(s)
 
     def add_typed_identifiers(self, type, identifiers):
@@ -124,7 +124,7 @@ class SyntacticAnalyzer():
         identifiers_buffer = []
         if self.compare_token_type(TokenType.Identifier):
             self.add_current_token_to_identifier_stack()
-            identifiers_buffer.append(self.current_token)
+            identifiers_buffer.append(self.current_token['token'])
 
             self.get_next_token()
             identifiers_buffer += self.process_identifiers_list_2()
@@ -140,7 +140,7 @@ class SyntacticAnalyzer():
             self.get_next_token()
             if self.compare_token_type(TokenType.Identifier):
                 self.add_current_token_to_identifier_stack()
-                identifiers_buffer.append(self.current_token)
+                identifiers_buffer.append(self.current_token['token'])
 
                 self.get_next_token()
                 identifiers_buffer += self.process_identifiers_list_2()
