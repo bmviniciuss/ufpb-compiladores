@@ -386,6 +386,7 @@ class SyntacticAnalyzer():
             self.process_op_aditivo()
             self.process_term()
             self.process_simple_expression_2()
+            self.verify_arithmetic_expression()
 
     def process_term(self):
         self.process_fator()
@@ -396,22 +397,23 @@ class SyntacticAnalyzer():
             self.process_op_multiplicativo()
             self.process_fator()
             self.process_term_2()
+            self.verify_arithmetic_expression()
 
     def process_fator(self):
         if self.compare_token_type(TokenType.Identifier):
             self.process_procedure_activation()
 
         elif self.compare_token_type(TokenType.Integer):
-            self.get_next_token(Integer)
-            self.pct.push(TokenType.Integer)
+            self.get_next_token()
+            self.pct.push("integer")
 
         elif self.compare_token_type(TokenType.RealNumber):
             self.get_next_token()
-            self.pct.push(TokenType.RealNumber)
+            self.pct.push("real")
 
         elif self.compare_token_value(TokenValueRegex.BOOLEAN):
             self.get_next_token()
-            self.pct.push("Boolean")
+            self.pct.push("boolean")
 
         elif self.compare_token_value(TokenValueRegex.OPEN_PARENTHESIS):
             self.get_next_token()
@@ -424,7 +426,7 @@ class SyntacticAnalyzer():
                     ') esperado.'))
 
         elif self.compare_token_value(TokenValueRegex.NOT):
-            self.pct.push("Boolean")
+            self.pct.push("boolean")
             self.get_next_token()
             self.process_fator()
 
@@ -467,6 +469,29 @@ class SyntacticAnalyzer():
         else:
             raise Exception(self.format_error_message(
                 'Tipo de variável não permitido.'))
+
+    def verify_arithmetic_expression(self):
+        top = self.pct.pop()
+        subTop = self.pct.pop()
+
+        print("VERIFY: ",top, subTop)
+
+        if top == "interger" and subTop == "integer":
+            self.pct.push('integer')
+
+        elif top == "real" and subTop == "real":
+            self.pct.push('real')
+
+        elif top == "integer" and subTop == "real":
+            self.pct.push('real')
+
+        elif top == "real" and subTop == "integer":
+            self.pct.push('real')
+
+        else:
+            raise Exception(self.format_error_message(
+                "Tipos incompatíveis da operação."
+            ))
 
     def process(self, token_table):
         self.stack = list(reversed(token_table))
