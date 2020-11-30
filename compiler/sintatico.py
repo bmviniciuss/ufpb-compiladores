@@ -622,7 +622,7 @@ if __name__ == '__main__':
     logger.debug("Sintatico")
 
     base_path = pathlib.Path(__file__).parent.resolve()
-    file_name = 'Test3.pas'
+    file_name = 'Test4.pas'
     if '-name' in sys.argv:
         file_name = sys.argv[sys.argv.index('-name') + 1]
     file_path = path.join(base_path, '../pascal_sources', file_name)

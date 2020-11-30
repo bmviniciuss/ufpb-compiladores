@@ -4,8 +4,11 @@ class IdentifiersStack():
 
     def search(self, token_name):
         for token in self._stack[::-1]:
-            if not token['token'] == "$" and token['token'] == token_name:
+            if not token['token'] == "$":
+                if token['token'] == token_name:
                     return token
+            else:
+                break
         return False
 
     def push(self, identifier):
